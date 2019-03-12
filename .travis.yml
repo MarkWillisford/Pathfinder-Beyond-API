@@ -2,3 +2,10 @@ language: node_js
 node_js: node
 services:
     - mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: e5c8f42d-4915-457b-b3c9-e55e0c992ada
+  app: rocky-mountain-99485
+  on:
+    repo: MarkWillisford/Pathfinder-Beyond-API
