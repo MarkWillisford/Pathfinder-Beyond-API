@@ -8,16 +8,19 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "mongoose": "^5.4.19",
+    "morgan": "^1.9.1",
     "travis": "^0.1.1",
-    "travis-ci": "^2.2.0"
+    "travis-ci": "^2.2.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
-    "mocha": "^6.0.2"
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10"
   },
   "scripts": {
-    "start": "node ./src/server.js",
+    "start": "nodemon ./src/server.js",
     "test": "mocha --exit"
   },
   "author": "",
