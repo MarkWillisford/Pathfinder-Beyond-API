@@ -1,9 +1,9 @@
 // const mongoose = require('mongoose');
 const uuid = require('uuid');
 
-const RacesList = {
+const AasimarHeritagesList = {
 	create: function(name, standardRacialTraits) {
-	  console.log('Creating new races list item');
+	  console.log('Creating new Aasimar Heritage list item');
 	  const item = {
 			name: name,
 			id: uuid.v4(),
@@ -14,16 +14,16 @@ const RacesList = {
 	  return item;
 	},
 	get: function() {
-	  console.log('Retrieving races list items');
+	  console.log('Retrieving Aasimar Heritages list items');
 	  return Object.keys(this.items).map(key => this.items[key]);
 	},
   };
   
-  function createRacesList() {
-	const storage = Object.create(RacesList);
+  function createAasimarHeritagesList() {
+	const storage = Object.create(AasimarHeritagesList);
 	storage.items = {};
 	return storage;
   }
 
-module.exports = { Races: createRacesList() }
+module.exports = { AasimarHeritages: createAasimarHeritagesList() }
 //mongoose.model('Race', RaceSchema);

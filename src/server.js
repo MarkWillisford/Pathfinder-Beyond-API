@@ -2,7 +2,16 @@ const express = require('express');
 const morgan = require('morgan');
 const winston = require('winston');
 const mongoose = require('mongoose');
+const aasimarHeritagesRouter = require('./routers/aasimarHeritages.router');
+const bloodlinesRouter = require('./routers/bloodlines.router');
+const charClassesRouter = require('./routers/charClasses.router');
+const deitiesRouter = require('./routers/deities.router');
+const domainsRouter = require('./routers/domains.router');
+const druidsNatureBondsRouter = require('./routers/druidsNatureBonds.router');
+const featsRouter = require('./routers/feats.router');
 const racesRouter = require('./routers/races.router');
+const spellsRouter = require('./routers/spells.router');
+const traitsRouter = require('./routers/traits.router');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,7 +32,16 @@ app.use(
 );
 
 /* Routes */
+app.use('/api/aasimarHeritages', aasimarHeritagesRouter);
+app.use('/api/bloodlines', bloodlinesRouter);
+app.use('/api/classes', charClassesRouter);
+app.use('/api/deities', deitiesRouter);
+app.use('/api/domains', domainsRouter);
+app.use('/api/druidsNatureBonds', druidsNatureBondsRouter);
+app.use('/api/feats', featsRouter);
 app.use('/api/races', racesRouter);
+app.use('/api/spells', spellsRouter);
+app.use('/api/traits', traitsRouter);
 
 /* app.get('/api/*', (req, res) => {
 res.json({ok: true});
