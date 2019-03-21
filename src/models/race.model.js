@@ -17,13 +17,13 @@ const RacesList = {
 	  console.log('Retrieving races list items');
 	  return Object.keys(this.items).map(key => this.items[key]);
 	},
-  };
+};
   
-  function createRacesList() {
-	const storage = Object.create(RacesList);
-	storage.items = {};
-	return storage;
-  }
+function createRacesList() {
+const storage = Object.create(RacesList);
+storage.items = {};
+return storage;
+}
 
 module.exports = { Races: createRacesList() }
 //mongoose.model('Race', RaceSchema);

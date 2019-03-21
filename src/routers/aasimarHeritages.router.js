@@ -4,9 +4,9 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-const {AasimarHeritages} = require('../models/aasimarHeritage.model');
+const {AasimarHeritage} = require('../models/aasimarHeritage.model');
 
-// we're going to add some races to Races
+/* // we're going to add some races to Races
 // so there's some data to look at
 AasimarHeritages.create("Aasimar - Garuda-Blooded, Plumekith", {
   "blurb":"Creatures blessed with a celestial bloodline, aasimars seem human except for some exotic quality that betrays their otherworldly origin. While aasimars are nearly always beautiful, something simultaneously a part of and apart from humanity, not all of them are good, though very few are evil. Their shimmering avian features make plumekith instantly recognizable. Though they can act rashly, plumekith never shirk their duty after making a commitment.",
@@ -31,12 +31,23 @@ AasimarHeritages.create("Aasimar - Peri-Blooded, Emberkin", {
   {"name":"Spell-Like Ability", "description":"Aasimars can use pyrotechnics once per day as a spell-like ability (caster level equal to the aasimar’s class level)."},
   {"name":"Darkvision", "description":"Aasimar have darkvision 60 ft. (they can see perfectly in the dark up to 60 feet.)"}
   ]
-});
+}); */
+
+
 
 // send back JSON representation of all races
 // on GET requests to root
-router.get('/', (req, res) => {
-  res.json(AasimarHeritages.get());
+/* router.get('/', (req, res) => {
+  res.json(AasimarHeritage.get());
+}); */
+
+router.route('/').get((req, res) => {
+  res.json(AasimarHeritage.find()
+    .then(aasimarHeritages => res.json(aasimarHeritages)))
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'something went terribly wrong' });
+    });
 });
 
 module.exports = router;
