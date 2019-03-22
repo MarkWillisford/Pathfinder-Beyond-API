@@ -1,31 +1,6 @@
 const mongoose = require('mongoose');
-const uuid = require('uuid');
 
-/* const AasimarHeritagesList = {
-	create: function(name, standardRacialTraits) {
-	  console.log('Creating new Aasimar Heritage list item');
-	  const item = {
-			name: name,
-			id: uuid.v4(),
-			expand:false,
-			standardRacialTraits:standardRacialTraits,
-		};
-	  this.items[item.id] = item;
-	  return item;
-	},
-	get: function() {
-	  console.log('Retrieving Aasimar Heritages list items');
-	  return Object.keys(this.items).map(key => this.items[key]);
-	},
-  };
-  
-  function createAasimarHeritagesList() {
-	const storage = Object.create(AasimarHeritagesList);
-	storage.items = {};
-	return storage;
-	} */
-
-const AasimarHeritageSchema = new mongoose.Schema({
+const aasimarHeritageSchema = mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
@@ -96,6 +71,7 @@ const AasimarHeritageSchema = new mongoose.Schema({
 
 //module.exports = { AasimarHeritages: createAasimarHeritagesList() }
 // mongoose.model('AasimarHeritage', AasimarHeritageSchema);
-const AasimarHeritage = mongoose.model('AasimarHeritage', AasimarHeritageSchema);
+const AasimarHeritage = mongoose.model('AasimarHeritage', aasimarHeritageSchema);
 
-module.exports = { AasimarHeritage };
+module.exports = {AasimarHeritage};
+//module.exports = mongoose.model('AasimarHeritage', AasimarHeritageSchema);

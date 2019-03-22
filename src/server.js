@@ -77,8 +77,8 @@ const logger = winston.createLogger({
     ]
 });
 
-function runServer(databaseUrl) {
-    return new Promise((res, rej) => {
+function runServer(databaseUrl, port = PORT) {
+/*     return new Promise((res, rej) => {
         mongoose.connect(databaseUrl, (err) => {
             if (err) {
                 return rej(err);
@@ -101,7 +101,26 @@ function runServer(databaseUrl) {
             });
             return server;
         });
-    });
+    }); */
+
+        return new Promise((resolve, reject) => {
+          mongoose.connect(databaseUrl, err => {
+            if (err) {
+                console.log(err);
+              return reject(err);
+            }
+            server = app.listen(port, () => {
+              console.log(`Your app is listening on port ${port}`);
+              console.log(`You are connected to ${databaseUrl}`);
+              resolve();
+            })
+              .on('error', err => {
+                mongoose.disconnect();
+                reject(err);
+              });
+          });
+        });
+
 }
 
 // like 'runServer', this function also returns a promise
