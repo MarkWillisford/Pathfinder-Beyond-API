@@ -1,28 +1,60 @@
-// const mongoose = require('mongoose');
-const uuid = require('uuid');
+const mongoose = require('mongoose');
 
-const DeitiesList = {
-	create: function(name, overview ) {
-	  console.log('Creating new deities list item');
-	  const item = {
-			name: name,
-            id: uuid.v4(),
-            overview: overview
-		};
-	  this.items[item.id] = item;
-	  return item;
+const DeitySchema = new mongoose.Schema({
+	name: {
+		type: String,
+		required: true,
 	},
-	get: function() {
-	  console.log('Retrieving deities list items');
-	  return Object.keys(this.items).map(key => this.items[key]);
+	overview:{
+		titles:[{
+			type: String,
+			required: true,
+		}],
+		home:[{
+			type: String,
+			required: true,
+		}],
+		alignment:{
+			type: String,
+			required: true,
+		},
+		areasOfConcern:[{
+			type: String,
+			required: true,
+		}],
+		worshipers:[{
+			type: String,
+			required: true,
+		}],
+		clericAlignments:[{
+			type: String,
+			required: true,
+		}],
+		domains:[{
+			type: String,
+			required: true,
+		}],
+		subdomains:[{
+			type: String,
+			required: true,
+		}],
+		favoredWeapon:[{
+			type: String,
+			required: true,
+		}],
+		symbol:[{
+			type: String,
+			required: true,
+		}],
+		sacredAnimal:[{
+			type: String,
+			required: true,
+		}],
+		sacredColors:[{
+			type: String,
+			required: true,
+		}],
 	},
-  };
-  
-  function createDeitiesList() {
-	const storage = Object.create(DeitiesList);
-	storage.items = {};
-	return storage;
-  }
+}, {collection: "deities"}); 
 
-module.exports = { Deities: createDeitiesList() }
-//mongoose.model('Deities', deitiesSchema);
+module.exports = mongoose.model('Deity', DeitySchema);  

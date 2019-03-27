@@ -24,11 +24,13 @@
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "mocha": "^6.0.2",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "sinon": "^7.3.0",
+    "supertest": "^4.0.2"
   },
   "scripts": {
     "start": "nodemon ./src/server.js",
-    "test": "mocha --exit"
+    "test": "mocha --timeout 5000 --exit"
   },
   "author": "",
   "license": "ISC"

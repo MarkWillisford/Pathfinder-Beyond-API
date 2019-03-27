@@ -7,10 +7,10 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 
 const aasimarHeritagesRouter = require('./routers/aasimarHeritages.router');
-/* const bloodlinesRouter = require('./routers/bloodlines.router');
+const bloodlinesRouter = require('./routers/bloodlines.router');
 const charClassesRouter = require('./routers/charClasses.router');
 const deitiesRouter = require('./routers/deities.router');
-const domainsRouter = require('./routers/domains.router');
+/* const domainsRouter = require('./routers/domains.router');
 const druidsNatureBondsRouter = require('./routers/druidsNatureBonds.router');
 const featsRouter = require('./routers/feats.router');
 const racesRouter = require('./routers/races.router');
@@ -47,9 +47,11 @@ if (ENV === 'development') {
 }
 
 /* Routes */
-app.use('/api/aasimarHeritages', aasimarHeritagesRouter);
 app.use('/api/users', usersRouter);
-
+app.use('/api/aasimarHeritages', aasimarHeritagesRouter);
+app.use('/api/bloodlines', bloodlinesRouter);
+app.use('/api/charClasses', charClassesRouter);
+app.use('/api/deities', deitiesRouter);
 
 /* app.use('/api/bloodlines', bloodlinesRouter);
 app.use('/api/classes', charClassesRouter);

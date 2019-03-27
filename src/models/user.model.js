@@ -25,12 +25,12 @@ const UserSchema = new mongoose.Schema({
 		enum: ['user','content creator','admin'],
 		default: 'user',
 	},	
-});
+}, {collection: "users"});
 
 // This function hashes the password prior to 
 // saving on either a modified PW or new user
 UserSchema.pre('save', function userPreSave(next) {
-    const user = this;
+	const user = this;
     if (this.isModified('password') || this.isNew) {
         return bcrypt.hash(user.password, 10)
             .then((hash) => {

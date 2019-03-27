@@ -67,11 +67,7 @@ const aasimarHeritageSchema = mongoose.Schema({
 			},
 		}]
 	}
-});
+}, {collection: "aasimarHeritages"});
 
-//module.exports = { AasimarHeritages: createAasimarHeritagesList() }
-// mongoose.model('AasimarHeritage', AasimarHeritageSchema);
-const AasimarHeritage = mongoose.model('AasimarHeritage', aasimarHeritageSchema);
 
-module.exports = {AasimarHeritage};
-//module.exports = mongoose.model('AasimarHeritage', AasimarHeritageSchema);
+module.exports = mongoose.model('AasimarHeritage', aasimarHeritageSchema);
