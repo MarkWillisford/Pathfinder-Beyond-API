@@ -17,16 +17,9 @@ const bloodlineSchema = mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	bonusSpells:[{
-		level:{
-			type: String,
-			required: true,
-		},
-		spell:{
-			type: String,
-			required: true,
-		}
-	}],
+	bonusSpells:[
+		
+	],
 	bonusFeats:[{
 		name: {
 			type: String,

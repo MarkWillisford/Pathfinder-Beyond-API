@@ -13,6 +13,7 @@ const AasimarHeritage = require('../src/models/aasimarHeritage.model');
 const Bloodline = require('../src/models/bloodline.model');
 const CharClass = require('../src/models/charClass.model');
 const Deity = require('../src/models/deity.model');
+const Domain = require('../src/models/domain.model');
 const {app, runServer, closeServer} = require('../src/server');
 const expect = chai.expect;
 
@@ -50,7 +51,10 @@ describe('tests', function() {
                         .then(function(res){
                             return seedDeitiesData()
                             .then(function(res){
+                                return seedDomainsData()
+                                .then(function(res){
 
+                                });
                             });
                         });
                         /*  return seedChecks(user._id)
@@ -166,6 +170,7 @@ describe('tests', function() {
                     // the number known to be in the DB 
                     expect(res.body.length).to.equal(10);
                     // determine that the results have the expected keys
+                    console.log(res.body[0]);
                     res.body.forEach((bloodline => {
                         expect(bloodline).to.be.a('object');
                         expect(bloodline).to.include.keys('id', 'type', 'name', 'description', 'classSkill', 
@@ -221,32 +226,32 @@ describe('tests', function() {
                 });
             });
         });
+        describe('domains GET endpoint', function(){
+            it('should return domain objects with the correct key/value pairs', function() {
+                return chai.request(app)
+			    // make a get call
+                .get('/api/domains')
+                .set('Authorization', `Bearer ${token}`)
+                .then(function(res) {
+                    // determine that status and return data type are correct
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.json;
+                    expect(res.body).to.be.a("array");
+                    // the number known to be in the DB 
+                    expect(res.body.length).to.equal(10);
+                    // determine that the results have the expected keys
+                    res.body.forEach((domain => {
+                        expect(domain).to.be.a('object');
+                        expect(domain).to.include.keys('id', 'name', 'type', 'description', 
+                            'grantedPowers', 'domainSpells', 'subdomains');
+                    }))
+                });
+            });
+        });
 
     });
 
 /*      it('should 200 on GET requests', function() {
-            return chai.request(app)
-            .get('/api/classes')
-            .then(function(res) {
-                expect(res).to.have.status(200);
-                expect(res).to.be.json;
-                expect(res.body).to.be.a("array");
-                expect(res.body.length).to.be.at.least(1);
-            });
-        });
-
-        it('should 200 on GET requests', function() {
-            return chai.request(app)
-            .get('/api/deities')
-            .then(function(res) {
-                expect(res).to.have.status(200);
-                expect(res).to.be.json;
-                expect(res.body).to.be.a("array");
-                expect(res.body.length).to.be.at.least(1);
-            });
-        });
-
-        it('should 200 on GET requests', function() {
             return chai.request(app)
             .get('/api/domains')
             .then(function(res) {
@@ -440,14 +445,13 @@ function generateBloodlinesData(){
     };
 }
 function generateSpellsArray(){
-    let numbers = ["3rd", "5th", "7th", "9th", "11th", "13th", "15th", "17th", "19th"]
     let array = [];
-    for(let i=0;i<9;i++){
-        array.push({
-            level: numbers[i],
-            spell: faker.lorem.sentence,
-        })
-    };
+    let numbers = ["3rd", "5th", "7th", "9th", "11th", "13th", "15th", "17th", "19th"]
+    for(let i = 0; i < numbers.length; i++){
+        let spellObject = {};
+        spellObject[numbers[i]] = faker.lorem.sentence;
+        array.push(spellObject);
+    }
     return array;
 }
 function generateFeatsArray(num){
@@ -527,6 +531,49 @@ function generateDeitiesData(){
             sacredColors:generateAnArrayOfStrings(2),
         }
     };
+}
+
+function seedDomainsData(){
+    console.info('seeding deities data');
+    const seedData = [];
+  
+    for (let i=1; i<=10; i++) {
+      seedData.push(generateDomainsData());
+    }
+    // this will return a promise
+    return Domain.insertMany(seedData);
+}
+function generateDomainsData(){
+    return {
+        type: faker.lorem.sentence,
+        name: faker.company.companyName(),
+        description: faker.lorem.text,
+        grantedPowers: {
+            name: faker.company.companyName(),
+            type: faker.lorem.sentence,
+            number: faker.random.number({min:1, max:10}),           
+            description: faker.lorem.text,            
+        },
+        domainSpells:[
+            
+        ]
+        
+        
+        {
+            titles: generateAnArrayOfStrings(3),
+            home: generateAnArrayOfStrings(2),
+            alignment: faker.lorem.sentence,
+            areasOfConcern:generateAnArrayOfStrings(5),
+            worshipers:generateAnArrayOfStrings(5),
+            clericAlignments:generateAnArrayOfStrings(3),
+            domains:generateAnArrayOfStrings(5),
+            subdomains:generateAnArrayOfStrings(5),
+            favoredWeapon:generateAnArrayOfStrings(2),
+            symbol:generateAnArrayOfStrings(2),
+            sacredAnimal:generateAnArrayOfStrings(2),
+            sacredColors:generateAnArrayOfStrings(2),
+        }
+    };    
 }
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below

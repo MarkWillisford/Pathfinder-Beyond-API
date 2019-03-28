@@ -1,32 +1,43 @@
-// const mongoose = require('mongoose');
-const uuid = require('uuid');
+const mongoose = require('mongoose');
 
-const DomainsList = {
-	create: function(domain) {
-	  console.log('Creating new domains list item');
-	  const item = {
-            type: domain.type,
-            id: uuid.v4(),
-            name: domain.name,
-            description: domain.description,
-            grantedPowers: domain.grantedPowers,
-            domainSpells: domain.domainSpells,
-            subdomains: domain.subdomains,
-		};
-	  this.items[item.id] = item;
-	  return item;
+const domainSchema = mongoose.Schema({
+	type: {
+		type: String,
+		required: true,
 	},
-	get: function() {
-	  console.log('Retrieving domains list items');
-	  return Object.keys(this.items).map(key => this.items[key]);
+	name: {
+		type: String,
+		required: true,
 	},
-  };
-  
-  function createDomainsList() {
-	const storage = Object.create(DomainsList);
-	storage.items = {};
-	return storage;
-  }
+	description: {
+		type: String,
+		required: true,
+	},
+	grantedPowers:[{
+		name: {
+			type: String,
+			required: true,
+		},
+		type: {
+			type: String,
+			required: true,
+		},
+		level: {
+			type: Number,
+			required: true,
+		},
+		description: {
+			type: String,
+			required: true,
+		},
+	}],
+	domainSpells:[
 
-module.exports = { Domains: createDomainsList() }
-//mongoose.model('Domains', domainsSchema);
+	],
+	subdomains:[{
+			type: String,
+	}],
+
+}, {collection: "domains"});
+
+module.exports = mongoose.model('Domain', domainSchema);
