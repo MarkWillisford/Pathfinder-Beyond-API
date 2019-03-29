@@ -1,32 +1,46 @@
-// const mongoose = require('mongoose');
-const uuid = require('uuid');
+const mongoose = require('mongoose');
 
-const DomainsList = {
-	create: function(domain) {
-	  console.log('Creating new domains list item');
-	  const item = {
-            type: domain.type,
-            id: uuid.v4(),
-            name: domain.name,
-            description: domain.description,
-            grantedPowers: domain.grantedPowers,
-            domainSpells: domain.domainSpells,
-            subdomains: domain.subdomains,
-		};
-	  this.items[item.id] = item;
-	  return item;
+const FeatSchema = mongoose.Schema({
+	name: {
+		type: String,
+		required: true,
 	},
-	get: function() {
-	  console.log('Retrieving domains list items');
-	  return Object.keys(this.items).map(key => this.items[key]);
+	specialization: {
+		type: String,
+		required: true,
 	},
-  };
-  
-  function createDomainsList() {
-	const storage = Object.create(DomainsList);
-	storage.items = {};
-	return storage;
-  }
+	type:[{
+		type: String,
+		required: true,
+	}],
+	description: {
+		type: String,
+		required: true,
+	},
+	benefit: {
+		type: String,
+		required: true,
+	},
+	progromaticBenefit: {
+		type: String,
+	},
+	normal: {
+		type: String,
+	},
+	special: {
+		type: String,
+	},
+	repeatable: {
+		type: Boolean,
+		required: true,
+	},
+	selections:[{
+		type: String,
+	}],
+	source: {
+		type: String,
+		required: true,
+	},
+})
 
-module.exports = { Domains: createDomainsList() }
-//mongoose.model('Domains', domainsSchema);
+module.exports = mongoose.model('Feat', FeatSchema);

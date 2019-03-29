@@ -1,29 +1,80 @@
-// const mongoose = require('mongoose');
-const uuid = require('uuid');
+const mongoose = require('mongoose');
 
-const RacesList = {
-	create: function(name, standardRacialTraits) {
-	  console.log('Creating new races list item');
-	  const item = {
-			name: name,
-			id: uuid.v4(),
-			expand:false,
-			standardRacialTraits:standardRacialTraits,
-		};
-	  this.items[item.id] = item;
-	  return item;
+const RaceSchema = mongoose.Schema({
+	name: {
+		type: String,
+		required: true,
 	},
-	get: function() {
-	  console.log('Retrieving races list items');
-	  return Object.keys(this.items).map(key => this.items[key]);
+	expand: {
+		type: Boolean,
+		required: true,
 	},
-};
-  
-function createRacesList() {
-const storage = Object.create(RacesList);
-storage.items = {};
-return storage;
-}
+	standardRacialTraits:{
+		blurb: {
+			type: String,
+			required: true,
+		},
+		base:{
+			abilityScoreRacialBonuses: {
+				type: String,
+				required: true,
+			},
+			abilityScoreRacialBonusArray:[{
+				stat: {
+					type: String,
+					required: true,
+				},
+				value: {
+					type: Number,
+					required: true,
+				},
+			}],
+			skillRacialBonusArray:[{
+				stat: {
+					type: String,
+					required: true,
+				},
+				value: {
+					type: Number,
+					required: true,
+				},
+			}],
+			age: {
+				type: String,
+				required: true,
+			},
+			size: {
+				type: String,
+				required: true,
+			},
+			type: {
+				type: String,
+				required: true,
+			},
+			speed: {
+				type: String,
+				required: true,
+			},
+			languages:{
+				start:[],
+				learn:[],
+			}
+		},
+		racial:[{
+			name: {
+				type: String,
+				required: true,
+			},
+			description: {
+				type: String,
+				required: true,
+			},
+		}],
+		selections: {
+			type: String,
+			required: true,
+		},
+	}
+})
 
-module.exports = { Races: createRacesList() }
-//mongoose.model('Race', RaceSchema);
+module.exports = mongoose.model('Race', RaceSchema);

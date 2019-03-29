@@ -1,20 +1,39 @@
+'use strict';
+
 const express = require('express');
+const passport = require('passport');
 const router = express.Router();
 
-const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
+require('../strategy/jwt.strategy')(passport);
 
-const {Feats} = require('../models/feat.model');
+const Feat = require('../models/feat.model');
 
-// we're going to add some races to Races
-// so there's some data to look at
-Feats.create();
-Feats.create();
-
-// send back JSON representation of all races
-// on GET requests to root
-router.get('/', (req, res) => {
-  res.json(Feats.get());
-});
+router.route('/')
+  .get(passport.authenticate('jwt', { session: false }), (req, res) => {
+    Feat
+      .find()
+      .then(feats => {
+        res.json(feats.map(feat => {
+          return {
+            id: feat._id,
+            name: feat.name,
+            specialization: feat.specialization,
+            type: feat.type,
+            description: feat.description,
+            benefit: feat.benefit,
+            progromaticBenefit: feat.progromaticBenefit,
+            normal: feat.normal,
+            special: feat.special,
+            repeatable: feat.repeatable,
+            selections: feat.selections,
+            source: feat.source,
+          };
+        }));
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error" });
+      });
+  });
 
 module.exports = router;

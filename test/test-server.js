@@ -14,6 +14,10 @@ const Bloodline = require('../src/models/bloodline.model');
 const CharClass = require('../src/models/charClass.model');
 const Deity = require('../src/models/deity.model');
 const Domain = require('../src/models/domain.model');
+const Feat = require('../src/models/feat.model');
+const Race = require('../src/models/race.model');
+const Spell = require('../src/models/spell.model');
+const Trait = require('../src/models/trait.model');
 const {app, runServer, closeServer} = require('../src/server');
 const expect = chai.expect;
 
@@ -53,7 +57,19 @@ describe('tests', function() {
                             .then(function(res){
                                 return seedDomainsData()
                                 .then(function(res){
+                                    return seedFeatsData()
+                                    .then(function(res){
+                                        return seedRacesData()
+                                        .then(function(res){
+                                            return seedSpellsData()
+                                            .then(function(res){
+                                                return seedTraitsData()
+                                                .then(function(res){
 
+                                                });
+                                            });
+                                        });
+                                    });
                                 });
                             });
                         });
@@ -170,7 +186,6 @@ describe('tests', function() {
                     // the number known to be in the DB 
                     expect(res.body.length).to.equal(10);
                     // determine that the results have the expected keys
-                    console.log(res.body[0]);
                     res.body.forEach((bloodline => {
                         expect(bloodline).to.be.a('object');
                         expect(bloodline).to.include.keys('id', 'type', 'name', 'description', 'classSkill', 
@@ -244,6 +259,94 @@ describe('tests', function() {
                         expect(domain).to.be.a('object');
                         expect(domain).to.include.keys('id', 'name', 'type', 'description', 
                             'grantedPowers', 'domainSpells', 'subdomains');
+                    }))
+                });
+            });
+        });
+        describe('feats GET endpoint', function(){
+            it('should return feats objects with the correct key/value pairs', function() {
+                return chai.request(app)
+			    // make a get call
+                .get('/api/feats')
+                .set('Authorization', `Bearer ${token}`)
+                .then(function(res) {
+                    // determine that status and return data type are correct
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.json;
+                    expect(res.body).to.be.a("array");
+                    // the number known to be in the DB 
+                    expect(res.body.length).to.equal(10);
+                    // determine that the results have the expected keys
+                    res.body.forEach((feat => {
+                        expect(feat).to.be.a('object');
+                        expect(feat).to.include.keys('id', 'name', 'type', 'description', 
+                            'specialization', 'benefit', 'progromaticBenefit', 'normal',
+                            'special', 'repeatable', 'selections', 'source');
+                    }))
+                });
+            });
+        });
+        describe('Races GET endpoint', function(){
+            it('should return races objects with the correct key/value pairs', function() {
+                return chai.request(app)
+			    // make a get call
+                .get('/api/races')
+                .set('Authorization', `Bearer ${token}`)
+                .then(function(res) {
+                    // determine that status and return data type are correct
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.json;
+                    expect(res.body).to.be.a("array");
+                    // the number known to be in the DB 
+                    expect(res.body.length).to.equal(10);
+                    // determine that the results have the expected keys
+                    res.body.forEach((race => {
+                        expect(race).to.be.a('object');
+                        expect(race).to.include.keys('id', 'name', 'expand', 'standardRacialTraits');
+                    }))
+                });
+            });
+        });
+        describe('Spells GET endpoint', function(){
+            it('should return spells objects with the correct key/value pairs', function() {
+                return chai.request(app)
+			    // make a get call
+                .get('/api/spells')
+                .set('Authorization', `Bearer ${token}`)
+                .then(function(res) {
+                    // determine that status and return data type are correct
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.json;
+                    expect(res.body).to.be.a("array");
+                    // the number known to be in the DB 
+                    expect(res.body.length).to.equal(10);
+                    // determine that the results have the expected keys
+                    res.body.forEach((spell => {
+                        expect(spell).to.be.a('object');
+                        expect(spell).to.include.keys('id', 'name', 'school', 'level', 'casting', 'effect', 'description');
+                    }))
+                });
+            });
+        });
+        describe('Traits GET endpoint', function(){
+            it('should return traits objects with the correct key/value pairs', function() {
+                return chai.request(app)
+			    // make a get call
+                .get('/api/traits')
+                .set('Authorization', `Bearer ${token}`)
+                .then(function(res) {
+                    // determine that status and return data type are correct
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.json;
+                    expect(res.body).to.be.a("array");
+                    // the number known to be in the DB 
+                    expect(res.body.length).to.equal(10);
+                    // determine that the results have the expected keys
+                    res.body.forEach((trait => {
+                        expect(trait).to.be.a('object');
+                        expect(trait).to.include.keys('id', 'URL', 'Name-Original', 'Type', 'Category', 'Name', 
+                            'Req-Race1', 'Req-Race2', 'Req-Class', 'Req-Align', 'Req-Other', 'Req-Faith', 'Req-Place',
+                            'Description', 'Source');
                     }))
                 });
             });
@@ -534,7 +637,7 @@ function generateDeitiesData(){
 }
 
 function seedDomainsData(){
-    console.info('seeding deities data');
+    console.info('seeding domains data');
     const seedData = [];
   
     for (let i=1; i<=10; i++) {
@@ -551,29 +654,177 @@ function generateDomainsData(){
         grantedPowers: {
             name: faker.company.companyName(),
             type: faker.lorem.sentence,
-            number: faker.random.number({min:1, max:10}),           
+            level: faker.random.number({min:1, max:10}),           
             description: faker.lorem.text,            
         },
         domainSpells:[
             
-        ]
-        
-        
-        {
-            titles: generateAnArrayOfStrings(3),
-            home: generateAnArrayOfStrings(2),
-            alignment: faker.lorem.sentence,
-            areasOfConcern:generateAnArrayOfStrings(5),
-            worshipers:generateAnArrayOfStrings(5),
-            clericAlignments:generateAnArrayOfStrings(3),
-            domains:generateAnArrayOfStrings(5),
-            subdomains:generateAnArrayOfStrings(5),
-            favoredWeapon:generateAnArrayOfStrings(2),
-            symbol:generateAnArrayOfStrings(2),
-            sacredAnimal:generateAnArrayOfStrings(2),
-            sacredColors:generateAnArrayOfStrings(2),
-        }
+        ],
+        subdomains:generateAnArrayOfStrings(4),
     };    
+}
+
+function seedFeatsData(){
+    console.info('seeding feats data');
+    const seedData = [];
+  
+    for (let i=1; i<=10; i++) {
+      seedData.push(generateFeatsData());
+    }
+    // this will return a promise
+    return Feat.insertMany(seedData);
+}
+function generateFeatsData(){
+    return {
+        name: faker.company.companyName(),
+        specialization: faker.lorem.sentence,
+        type: faker.lorem.sentence,
+        description: faker.lorem.text,
+        benefit: faker.lorem.sentence,
+        progromaticBenefit: null,
+        normal: faker.lorem.sentence,
+        special: faker.lorem.sentence,
+        repeatable: true,
+        selections: generateAnArrayOfStrings(3),
+        source: faker.lorem.sentence,
+      };    
+}
+
+function seedRacesData(){
+    console.info('seeding races data');
+    const seedData = [];
+  
+    for (let i=1; i<=10; i++) {
+      seedData.push(generateRacesData());
+    }
+    // this will return a promise
+    return Race.insertMany(seedData);
+}
+function generateRacesData(){
+    return {
+        name: faker.company.companyName(),
+        expand: false,
+        type: faker.lorem.sentence,
+        standardRacialTraits:{
+            blurb:faker.lorem.sentence,
+            base:{
+                abilityScoreRacialBonuses:faker.lorem.sentence,
+                abilityScoreRacialBonusArray:generateAnArrayOfBonusObjects(3), 
+                skillRacialBonusArray:generateAnArrayOfBonusObjects(2),
+                age:faker.lorem.sentence,
+                size:faker.lorem.sentence,
+                type:faker.lorem.sentence,
+                speed:faker.lorem.sentence,
+                languages:{
+                    start:generateAnArrayOfStrings(3),
+                    learn:generateAnArrayOfStrings(5),
+                },
+            },
+            racial:generateAnArrayOfDoubleStringObjects(5),
+            selections: false,
+        }
+    };
+}
+function generateAnArrayOfBonusObjects(num){
+    let array = [];
+    for(let i=0; i<num; i++){
+        array.push(generateBonusObject());
+    }
+    return array;
+}
+function generateBonusObject(){
+    return {
+        stat: faker.lorem.sentence,
+        value:faker.random.number({min:-2, max:2}),
+    }
+}
+function generateAnArrayOfDoubleStringObjects(num){
+    let array = [];
+    for(let i=0; i<num; i++){
+        array.push(generateDoubleStringObject());
+    }
+    return array;
+}
+function generateDoubleStringObject(){
+    return{
+        name:faker.lorem.sentence,
+        description: faker.lorem.sentence,
+    }
+}
+
+function seedSpellsData(){
+    console.info('seeding spells data');
+    const seedData = [];
+  
+    for (let i=1; i<=10; i++) {
+      seedData.push(generateSpellsData());
+    }
+    // this will return a promise
+    return Spell.insertMany(seedData);
+}
+function generateSpellsData(){
+    return {
+        name: faker.company.companyName(),
+        school:{
+            school:faker.lorem.sentence,
+            subSchool:faker.lorem.sentence,
+            descriptor:faker.lorem.sentence,
+        },
+        level:generateAnArrayOfStringNumberObjects(5),
+        casting:{
+            castingTime:faker.lorem.sentence,
+            components:generateAnArrayOfStrings(2),
+        },
+        effect:{
+            range:faker.lorem.sentence,
+            target:faker.lorem.sentence,
+            duration:faker.lorem.sentence,
+            savingThrow:generateAnArrayOfStrings(1),
+            spellResistance:faker.lorem.sentence,
+        },
+        description:generateAnArrayOfStrings(2),
+
+    }
+};
+function generateAnArrayOfStringNumberObjects(num){
+    let array = [];
+    for(let i=0; i<num; i++){
+        array.push({
+            class:faker.lorem.sentence,
+            num:faker.random.number({min:0, max:9}),
+        });
+    }
+    return array;
+}
+
+function seedTraitsData(){
+    console.info('seeding spells data');
+    const seedData = [];
+  
+    for (let i=1; i<=10; i++) {
+      let data = generateTraitsData();
+      seedData.push(data);
+    }
+    // this will return a promise
+    return Trait.insertMany(seedData);
+}
+function generateTraitsData(){
+    return {
+        URL:faker.lorem.sentence,
+        'Name-Original':faker.lorem.sentence,
+        Type:faker.lorem.sentence,
+        Category:faker.lorem.sentence,
+        Name:faker.lorem.sentence,
+        'Req-Race1':faker.lorem.sentence,
+        'Req-Race2':faker.lorem.sentence,
+        'Req-Class':faker.lorem.sentence,
+        'Req-Align':faker.lorem.sentence,
+        'Req-Other':faker.lorem.sentence,
+        'Req-Faith':faker.lorem.sentence,
+        'Req-Place':faker.lorem.sentence,
+        Description:faker.lorem.text,
+        Source:faker.lorem.sentence,
+    }
 }
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below

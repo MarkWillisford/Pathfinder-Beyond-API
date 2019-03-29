@@ -11,11 +11,11 @@ const bloodlinesRouter = require('./routers/bloodlines.router');
 const charClassesRouter = require('./routers/charClasses.router');
 const deitiesRouter = require('./routers/deities.router');
 const domainsRouter = require('./routers/domains.router');
-/* const druidsNatureBondsRouter = require('./routers/druidsNatureBonds.router');
 const featsRouter = require('./routers/feats.router');
 const racesRouter = require('./routers/races.router');
 const spellsRouter = require('./routers/spells.router');
-const traitsRouter = require('./routers/traits.router'); */
+//const druidsNatureBondsRouter = require('./routers/druidsNatureBonds.router');
+const traitsRouter = require('./routers/traits.router');
 const { router: usersRouter } = require('./routers/users.router');
 
 const app = express();
@@ -53,15 +53,16 @@ app.use('/api/bloodlines', bloodlinesRouter);
 app.use('/api/charClasses', charClassesRouter);
 app.use('/api/deities', deitiesRouter);
 app.use('/api/domains', domainsRouter);
+app.use('/api/feats', featsRouter);
+app.use('/api/races', racesRouter);
+app.use('/api/spells', spellsRouter);
+app.use('/api/traits', traitsRouter); 
 /* app.use('/api/bloodlines', bloodlinesRouter);
 app.use('/api/classes', charClassesRouter);
 app.use('/api/deities', deitiesRouter);
 app.use('/api/domains', domainsRouter);
 app.use('/api/druidsNatureBonds', druidsNatureBondsRouter);
-app.use('/api/feats', featsRouter);
-app.use('/api/races', racesRouter);
-app.use('/api/spells', spellsRouter);
-app.use('/api/traits', traitsRouter); */
+app.use('/api/feats', featsRouter);*/
 
  // Server scripts
 
