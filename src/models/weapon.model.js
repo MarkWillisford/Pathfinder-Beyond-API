@@ -33,15 +33,15 @@ const WeaponSchema = mongoose.Schema({
 	range: {
 		type: Number,
 	},
-    weight: {
-        type: Number,
-        required: true,
-    },
-    type: {
-        type: Number,
-        required: true,
-    },
-    special:[],
+  weight: {
+      type: Number,
+      required: true,
+  },
+  type: {
+      type: String,
+      required: true,
+  },
+  special:[],
 	material: {
 		type: String,
 	},

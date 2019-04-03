@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const GoodsAndServiceSchema = mongoose.Schema({
+const goodsAndServiceSchema = mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
@@ -16,22 +16,22 @@ const GoodsAndServiceSchema = mongoose.Schema({
 	type: {
 		type: String,
 		required: true,
+  },
+  isCollection:{
+    kit:{
+      type: Boolean,
+      required: true,
     },
-    collection:{
-        kit:{
-            type: Boolean,
-            required: true,
-        },
-        included:[],
-    },
-    cost: {
-        type: Number,
-        required: true,
-    },
-    weight: {
-        type: Number,
-        required: true,
-    },
-})
+    included:[],
+  }, 
+  cost: {
+    type: Number,
+    required: true,
+  },
+  weight: {
+    type: Number,
+    required: true,
+  },
+}, {collection: "goodsAndServices"})
 
-module.exports = mongoose.model('GoodsAndService', GoodsAndServiceSchema);
+module.exports = mongoose.model('GoodsAndService', goodsAndServiceSchema);

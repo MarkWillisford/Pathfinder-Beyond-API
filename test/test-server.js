@@ -18,6 +18,10 @@ const Feat = require('../src/models/feat.model');
 const Race = require('../src/models/race.model');
 const Spell = require('../src/models/spell.model');
 const Trait = require('../src/models/trait.model');
+const Armor = require('../src/models/armor.model');
+const GoodsAndService = require('../src/models/goodsAndServices.model');
+const TradeGoods = require('../src/models/tradeGoods.model');
+const Weapon = require('../src/models/weapon.model');
 const {app, runServer, closeServer} = require('../src/server');
 const expect = chai.expect;
 
@@ -37,55 +41,66 @@ describe('tests', function() {
     });
 
     describe('API calls', function(){
-        beforeEach(function(){
-            return seedUser()   // <--
-            .then(function(userData){ 
-                user = userData;	
-                const tokenPayload = {
-                    _id: user._id
-                }; 
-                token = jwt.sign(tokenPayload, config.SECRET, {
-                    expiresIn: config.EXPIRATION,
-                });	  // <-- 
-                return seedAasimarHeritagesData()
+      beforeEach(function(){
+        return seedUser()   // <--
+        .then(function(userData){ 
+          user = userData;	
+          const tokenPayload = {
+              _id: user._id
+          }; 
+          token = jwt.sign(tokenPayload, config.SECRET, {
+              expiresIn: config.EXPIRATION,
+          });	  // <-- 
+          return seedAasimarHeritagesData()
+          .then(function(res){
+            return seedBloodlinesData()
+            .then(function(res){
+              return seedCharClassesData()
+              .then(function(res){
+                return seedDeitiesData()
                 .then(function(res){
-                    return seedBloodlinesData()
+                  return seedDomainsData()
+                  .then(function(res){
+                    return seedFeatsData()
                     .then(function(res){
-                        return seedCharClassesData()
+                      return seedRacesData()
+                      .then(function(res){
+                        return seedSpellsData()
                         .then(function(res){
-                            return seedDeitiesData()
+                          return seedTraitsData()
+                          .then(function(res){                            
+                            return seedArmorData()
                             .then(function(res){
-                                return seedDomainsData()
+                              return seedGoodsAndServicesData()
+                              .then(function(res){
+                                return seedTradeGoodsData()
                                 .then(function(res){
-                                    return seedFeatsData()
+                                  return seedWeaponData()
+                                  .then(function(res){
+                                    return seedDruidData()
                                     .then(function(res){
-                                        return seedRacesData()
-                                        .then(function(res){
-                                            return seedSpellsData()
-                                            .then(function(res){
-                                                return seedTraitsData()
-                                                .then(function(res){
 
-                                                });
-                                            });
-                                        });
-                                    });
-                                });
-                            });
+                                    })
+                                  })
+                                })
+                              })
+                            })
+                          });
                         });
-                        /*  return seedChecks(user._id)
-                            .then(function(res){
-
-                            });   */
+                      });
                     });
+                  });
                 });
-            }); // <--
-		}); 
+              });
+            });
+          });
+        }); // <--
+		  }); 
 
-		afterEach(function(){
+		  afterEach(function(){
 			return tearDownDb();
-        });
-        describe('User GET endpoint', function(){
+      });
+    describe('User GET endpoint', function(){
 			it('should return user with correct fields', function(){
 				// strategy
 				// 1. get back all users returned by Get request to /users
@@ -351,7 +366,96 @@ describe('tests', function() {
                 });
             });
         });
-
+        describe('Equipment GET endpoint', function(){
+          describe('Armor GET endpoint', function(){  
+            it('should return armor objects with the correct key/value pairs', function() {
+              return chai.request(app)
+              // make a get call
+              .get('/api/armors')
+              .set('Authorization', `Bearer ${token}`)
+              .then(function(res) {
+                // determine that status and return data type are correct
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a("array");
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((armor => {
+                  expect(armor).to.be.a('object');
+                  expect(armor).to.include.keys('id', 'name', 'expand', 'description', 'use', 'cost', 
+                    'bonus', 'maxDexBonus', 'armorCheckPenalty', 'arcaneSpellFailureChance', 'speed', 
+                    'weight', 'material', 'masterwork');
+                }))
+              });
+            });
+          });
+          describe('Goods and Services GET endpoint', function(){  
+            it('should return G&S objects with the correct key/value pairs', function() {
+              return chai.request(app)
+              // make a get call
+              .get('/api/goodsAndServices')
+              .set('Authorization', `Bearer ${token}`)
+              .then(function(res) {
+                // determine that status and return data type are correct
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a("array");
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((gs => {
+                  expect(gs).to.be.a('object');
+                  expect(gs).to.include.keys('id', 'name', 'expand', 'description', 'type', 'isCollection', 
+                    'cost', 'weight');
+                }))
+              });
+            });
+          });
+          describe('Trade Goods GET endpoint', function(){  
+            it('should return trade goods objects with the correct key/value pairs', function() {
+              return chai.request(app)
+              // make a get call
+              .get('/api/tradeGoods')
+              .set('Authorization', `Bearer ${token}`)
+              .then(function(res) {
+                // determine that status and return data type are correct
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a("array");
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((tg => {
+                  expect(tg).to.be.a('object');
+                  expect(tg).to.include.keys('id', 'name', 'expand', 'description', 'cost', 'item');
+                }))
+              });
+            });
+          });
+          describe('Weapons GET endpoint', function(){  
+            it('should return trade goods objects with the correct key/value pairs', function() {
+              return chai.request(app)
+              // make a get call
+              .get('/api/weapons')
+              .set('Authorization', `Bearer ${token}`)
+              .then(function(res) {
+                // determine that status and return data type are correct
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a("array");
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((weapon => {
+                  expect(weapon).to.be.a('object');
+                  expect(weapon).to.include.keys('id', 'name', 'expand', 'description', 'category', 'use', 
+                    'cost', 'dmgS', 'dmgM', 'critical', 'range', 'weight', 'type', 'special', 'material', 'masterwork');
+                }))
+              });
+            });
+          });
+        });
     });
 
 /*      it('should 200 on GET requests', function() {
@@ -826,6 +930,130 @@ function generateTraitsData(){
         Source:faker.lorem.sentence,
     }
 }
+
+function seedEquipmentData(){
+  console.info('seeding Equipment data');
+}
+function seedArmorData(){
+  console.info('seeding Armor data');
+  const seedData = [];
+
+  for (let i=1; i<=10; i++) {
+    let data = generateArmorData();
+    seedData.push(data);
+  }
+  // this will return a promise
+  return Armor.insertMany(seedData);
+}
+function seedGoodsAndServicesData(){
+  console.info('seeding Goods and Services data');
+  const seedData = [];
+
+  for (let i=1; i<=10; i++) {
+    let data = generateGoodsAndServicesData();
+    seedData.push(data);
+  }
+  // this will return a promise
+  return GoodsAndService.insertMany(seedData);
+}
+function seedTradeGoodsData(){
+  console.info('seeding Trade Goods data');
+  const seedData = [];
+
+  for (let i=1; i<=10; i++) {
+    let data = generateTradeGoodsData();
+    seedData.push(data);
+  }
+  // this will return a promise
+  return TradeGoods.insertMany(seedData);
+}
+function seedWeaponData(){
+  console.info('seeding Weapons data');
+  const seedData = [];
+
+  for (let i=1; i<=10; i++) {
+    let data = generateWeaponsData();
+    seedData.push(data);
+  }
+  // this will return a promise
+  return Weapon.insertMany(seedData);
+}
+function generateArmorData(){
+  return{
+    name: faker.company.companyName(),
+    expand: false,
+    description: faker.lorem.text,
+    use: faker.lorem.sentence,
+    cost: faker.random.number({min:1,max:100}),
+    bonus:{
+      armor:faker.random.number({min:1,max:10}),
+    },
+    maxDexBonus: faker.random.number({min:0,max:10}),
+    armorCheckPenalty: faker.random.number({min:0,max:5}),
+    arcaneSpellFailureChance:faker.random.number({min:0,max:100}),
+    armorCheckPenalty: faker.random.number({min:0,max:5}),
+    speed:{
+      20:faker.random.number({min:5,max:20}),
+      30:faker.random.number({min:5,max:30}),
+    },
+    weight:faker.random.number({min:1,max:15}),
+    material:faker.lorem.sentence,
+    masterwork:false,
+  }
+}
+function generateGoodsAndServicesData(){
+  return{
+    name: faker.company.companyName(),
+    expand: false,
+    description: faker.lorem.text,
+    type: faker.lorem.sentence,
+    isCollection:{
+      kit:false,
+      included:[],
+    },
+    cost:faker.random.number({min:1,max:100}),
+    weight:faker.random.number({min:1,max:15}),
+  }
+}
+function generateTradeGoodsData(){
+  return{  
+    name: faker.company.companyName(),
+    expand: false,
+    description: faker.lorem.text,
+    cost:faker.random.number({min:1,max:100}),
+    item: faker.lorem.sentence,
+  }
+}
+function generateWeaponsData(){
+  return{
+    name: faker.company.companyName(),
+    expand: false,
+    description: faker.lorem.text,
+    category:faker.lorem.sentence,
+    use: faker.lorem.sentence,
+    cost: faker.random.number({min:1,max:100}),
+    dmgS:['1d3'],
+    dmgM:['1d4'],
+    critical:faker.lorem.sentence,
+    range:faker.random.number({min:10,max:100}),
+    weight:faker.random.number({min:1,max:15}),
+    type:faker.lorem.sentence,
+    special:[],
+    material:faker.lorem.sentence,
+    masterwork:false,
+  }
+}
+
+function seedDruidData(){
+  
+}
+
+
+
+
+
+
+
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below
 // to ensure data from one test does not stick

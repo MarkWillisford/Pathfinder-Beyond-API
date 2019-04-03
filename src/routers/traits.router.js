@@ -13,7 +13,6 @@ router.route('/')
     Trait
       .find()
       .then(traits => {
-        console.log(traits);
         res.json(traits.map(trait => {
           return {
             id: trait._id,
