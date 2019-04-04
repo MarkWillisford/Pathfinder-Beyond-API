@@ -14,7 +14,7 @@ const domainsRouter = require('./routers/domains.router');
 const featsRouter = require('./routers/feats.router');
 const racesRouter = require('./routers/races.router');
 const spellsRouter = require('./routers/spells.router');
-//const druidsNatureBondsRouter = require('./routers/druidsNatureBonds.router');
+const druidsNatureBondsRouter = require('./routers/druidsNatureBonds.router');
 const traitsRouter = require('./routers/traits.router');
 const armorsRouter = require('./routers/armors.router');
 const goodsAndServicesRouter = require('./routers/goodsAndServices.router');
@@ -65,7 +65,7 @@ app.use('/api/armors', armorsRouter);
 app.use('/api/goodsAndServices', goodsAndServicesRouter);
 app.use('/api/tradeGoods', tradeGoodsRouter);
 app.use('/api/weapons', weaponsRouter);
-/* app.use('/api/druidsNatureBonds', druidsNatureBondsRouter);*/
+app.use('/api/druidsNatureBonds', druidsNatureBondsRouter);
 
  // Server scripts
 

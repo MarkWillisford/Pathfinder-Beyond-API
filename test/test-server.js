@@ -9,6 +9,7 @@ const express = require('express');
 const request = require("supertest")(express);
 
 const User = require('../src/models/user.model');
+const AnimalCompanion = require('../src/models/animalCompanion.model');
 const AasimarHeritage = require('../src/models/aasimarHeritage.model');
 const Bloodline = require('../src/models/bloodline.model');
 const CharClass = require('../src/models/charClass.model');
@@ -453,6 +454,32 @@ describe('tests', function() {
                     'cost', 'dmgS', 'dmgM', 'critical', 'range', 'weight', 'type', 'special', 'material', 'masterwork');
                 }))
               });
+            });
+          });
+        });
+        describe('Druid GET endpoint', function(){  
+          it('should return Druid option objects with the correct key/value pairs', function() {
+            return chai.request(app)
+            // make a get call
+            .get('/api/druidsNatureBonds')
+            .set('Authorization', `Bearer ${token}`)
+            .then(function(res) {
+              // determine that status and return data type are correct
+              expect(res).to.have.status(200);
+              expect(res).to.be.json;
+              expect(res.body).to.be.a("array");
+              // the number known to be in the DB 
+              expect(res.body.length).to.equal(20);
+              // determine that the results have the expected keys
+              res.body.forEach((options => {
+                expect(options).to.be.a('object');
+                if(options.startingStatistics === undefined){
+                  expect(options).to.include.keys('id', 'name', 'type', 'description', 
+                    'grantedPowers', 'domainSpells', 'subdomains');
+                } else {
+                  expect(options).to.include.keys('id', 'name', 'type', 'startingStatistics', 'advancement');
+                }
+              }))
             });
           });
         });
@@ -1045,10 +1072,64 @@ function generateWeaponsData(){
 }
 
 function seedDruidData(){
-  
+  console.info('seeding Druid Natural Bond data');
+  const seedAnimalCompanionData = [];
+
+  for(let i=0; i<10; i++){
+    let data = {};
+    // animal companion
+    data = generateAnimalCompanionData();
+    seedAnimalCompanionData.push(data);
+  }
+
+  return AnimalCompanion.insertMany(seedAnimalCompanionData);
 }
 
-
+function generateAnimalCompanionData(){
+  return {
+    type:"animal companion",
+    name:faker.company.companyName(),
+    startingStatistics:{
+      size:faker.lorem.sentence,
+      speed:"50",
+      ac:{
+        amount:faker.random.number({min:1,max:10}),
+        type:faker.lorem.sentence,
+      },
+      attack:[{
+        type:faker.lorem.sentence,
+        damage:faker.lorem.sentence,
+        special:faker.lorem.sentence,
+      }],
+      abilityScores:{
+        strength:faker.random.number({min:7,max:18}),
+        dexterity:faker.random.number({min:7,max:18}),
+        constitution:faker.random.number({min:7,max:18}),
+        intelligence:faker.random.number({min:7,max:18}),
+        wisdom:faker.random.number({min:7,max:18}),
+        charisma:faker.random.number({min:7,max:18}),
+      },
+      specialQualitites:["low-light vision", "scent"]
+    },
+    advancement:{
+      level:7,
+      size:faker.lorem.sentence,
+      ac:{
+        amount:faker.random.number({min:1,max:10}),
+        type:faker.lorem.sentence,
+      },
+      attack:[{
+        type:faker.lorem.sentence,
+        damage:faker.lorem.sentence,
+      }],
+      abilityScores:{
+        strength:faker.random.number({min:1,max:10}),
+        dexterity:faker.random.number({min:1,max:10}),
+        constitution:faker.random.number({min:-2,max:10}),
+      }            
+    }
+  }
+}
 
 
 

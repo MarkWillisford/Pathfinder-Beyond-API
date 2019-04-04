@@ -4,7 +4,10 @@ const domainSchema = mongoose.Schema({
 	type: {
 		type: String,
 		required: true,
-	},
+  },
+  druidAvailable: {
+		type: Boolean,
+  },
 	name: {
 		type: String,
 		required: true,

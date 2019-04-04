@@ -1,0 +1,37 @@
+ML.net is a machine learning framework made for .NET devs
+Azure Machine Learning Studio - create your own ML models
+  TensorFlow and Torch
+Deeplearning vs ML?
+
+Azure Cognitive services - sentiment analysis
+dot.net/ml ML.NET 0.11 is available
+
+Dev freindly APIs for ML
+transforms
+trainers
+  linear
+  boosted trees
+  svm
+  k-means
+Misc, 
+Extensions
+  TF, Onnx, Torch
+
+The process of ML
+1.) prepare your data
+  load data
+  extract features
+2.) Build and train
+3.) run
+
+Deep learning uses neural networks, computer vision and speech recognition
+what is "swagger" for my web API
+What is Microsoft "Unity?"
+Vs Azure Machine Learning?
+
+
+Cesar De La Torre
+Principal PM
+cesardl@microsoft.com
+.NET product group
+microsoft
