@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../src/config/main.config');
 const express = require('express');
 const request = require("supertest")(express);
+const requiredFields = require('../src/middlewares/requiredFields.middleware');
 
 const User = require('../src/models/user.model');
 const AnimalCompanion = require('../src/models/animalCompanion.model');
@@ -23,6 +24,8 @@ const Armor = require('../src/models/armor.model');
 const GoodsAndService = require('../src/models/goodsAndServices.model');
 const TradeGoods = require('../src/models/tradeGoods.model');
 const Weapon = require('../src/models/weapon.model');
+const Character = require('../src/models/character.model');
+
 const {app, runServer, closeServer} = require('../src/server');
 const expect = chai.expect;
 
@@ -30,7 +33,7 @@ chai.use(chaiHttp);
 
 let user = null;
 let token = null;
-let userCredentials = { }
+let userCredentials = { };
 
 describe('tests', function() {    
 	before(function(){
@@ -80,7 +83,10 @@ describe('tests', function() {
                                   .then(function(res){
                                     return seedDruidData()
                                     .then(function(res){
+                                      return seedCharacterData()
+                                      .then(function(res){
 
+                                      })
                                     })
                                   })
                                 })
@@ -113,9 +119,9 @@ describe('tests', function() {
 					.get('/api/users')
 					.set('Authorization', `Bearer ${token}`)
 					.then(function(_res){
-                        res = _res;
+            res = _res;
 						expect(res).to.have.status(200);
-                        expect(res).to.be.a('object');
+            expect(res).to.be.a('object');
 						return User.findById(res.body._id);
 					})
 					.then(function(resUser){
@@ -150,406 +156,398 @@ describe('tests', function() {
             //it('should return ')
 		});
 
-        describe('User/login Post endpoint', function (){
-            it('should retrieve the auth token', () => {
-               //TODO!
-            }); 
-            it('should not login with the correct user and wrong password', () => {
+    describe('User/login Post endpoint', function (){
+        it('should retrieve the auth token', () => {
+            //TODO!
+        }); 
+        it('should not login with the correct user and wrong password', () => {
 
-            });
-        });
-
-        // strategy for all get calls:
-			// make a get call
-			// determine that status and return data type are correct
-			// determine that number of returned objects is equal to 
-            // the number known to be in the DB (10)
-            // determine that the results have the expected keys and values
-
-        describe('aasimarHeritages GET endpoint', function(){
-            it('should return heritage objects with the correct key/value pairs', function() {
-                return chai.request(app)
-			    // make a get call
-                .get('/api/aasimarHeritages')
-                .set('Authorization', `Bearer ${token}`)
-                .then(function(res) {
-                    // determine that status and return data type are correct
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.json;
-                    expect(res.body).to.be.a("array");
-                    // the number known to be in the DB 
-                    expect(res.body.length).to.equal(10);
-                    // determine that the results have the expected keys
-                    res.body.forEach((heritage => {
-                        expect(heritage).to.be.a('object');
-                        expect(heritage).to.include.keys('id', 'name', 'standardRacialTraits');
-                        expect(heritage.standardRacialTraits).to.include.keys('blurb', 'base', 'racial');
-                    }))
-                });
-            });
-        });
-        describe('bloodlines GET endpoint', function(){
-            it('should return bloodline objects with the correct key/value pairs', function() {
-                return chai.request(app)
-			    // make a get call
-                .get('/api/bloodlines')
-                .set('Authorization', `Bearer ${token}`)
-                .then(function(res) {
-                    // determine that status and return data type are correct
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.json;
-                    expect(res.body).to.be.a("array");
-                    // the number known to be in the DB 
-                    expect(res.body.length).to.equal(10);
-                    // determine that the results have the expected keys
-                    res.body.forEach((bloodline => {
-                        expect(bloodline).to.be.a('object');
-                        expect(bloodline).to.include.keys('id', 'type', 'name', 'description', 'classSkill', 
-                        'bonusSpells', 'bonusFeats', 'bloodlineArcana', 'bloodlinePowers');
-                    }))
-                });
-            });
-        });
-        describe('char class GET endpoint', function(){
-            it('should return charClass objects with the correct key/value pairs', function() {
-                return chai.request(app)
-			    // make a get call
-                .get('/api/charClasses')
-                .set('Authorization', `Bearer ${token}`)
-                .then(function(res) {
-                    // determine that status and return data type are correct
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.json;
-                    expect(res.body).to.be.a("array");
-                    // the number known to be in the DB 
-                    expect(res.body.length).to.equal(10);
-                    // determine that the results have the expected keys
-                    res.body.forEach((bloodline => {
-                        expect(bloodline).to.be.a('object');
-                        expect(bloodline).to.include.keys('id', 'name', 'classFeatures');
-                        expect(bloodline.classFeatures).to.include.keys('blurb', 'alignment', 'hd', 'wealth',
-                            'skills', 'classSkills', 'bab', 'goodSaves', 'proficiency', 'table');
-                    }))
-                });
-            });
-        });
-        describe('deities GET endpoint', function(){
-            it('should return deity objects with the correct key/value pairs', function() {
-                return chai.request(app)
-			    // make a get call
-                .get('/api/deities')
-                .set('Authorization', `Bearer ${token}`)
-                .then(function(res) {
-                    // determine that status and return data type are correct
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.json;
-                    expect(res.body).to.be.a("array");
-                    // the number known to be in the DB 
-                    expect(res.body.length).to.equal(10);
-                    // determine that the results have the expected keys
-                    res.body.forEach((deity => {
-                        expect(deity).to.be.a('object');
-                        expect(deity).to.include.keys('id', 'name', 'overview');
-                        expect(deity.overview).to.include.keys('titles', 'home', 'alignment', 'areasOfConcern',
-                            'worshipers', 'clericAlignments', 'domains', 'subdomains', 'favoredWeapon', 'symbol',
-                            'sacredAnimal', 'sacredColors');
-                    }))
-                });
-            });
-        });
-        describe('domains GET endpoint', function(){
-            it('should return domain objects with the correct key/value pairs', function() {
-                return chai.request(app)
-			    // make a get call
-                .get('/api/domains')
-                .set('Authorization', `Bearer ${token}`)
-                .then(function(res) {
-                    // determine that status and return data type are correct
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.json;
-                    expect(res.body).to.be.a("array");
-                    // the number known to be in the DB 
-                    expect(res.body.length).to.equal(10);
-                    // determine that the results have the expected keys
-                    res.body.forEach((domain => {
-                        expect(domain).to.be.a('object');
-                        expect(domain).to.include.keys('id', 'name', 'type', 'description', 
-                            'grantedPowers', 'domainSpells', 'subdomains');
-                    }))
-                });
-            });
-        });
-        describe('feats GET endpoint', function(){
-            it('should return feats objects with the correct key/value pairs', function() {
-                return chai.request(app)
-			    // make a get call
-                .get('/api/feats')
-                .set('Authorization', `Bearer ${token}`)
-                .then(function(res) {
-                    // determine that status and return data type are correct
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.json;
-                    expect(res.body).to.be.a("array");
-                    // the number known to be in the DB 
-                    expect(res.body.length).to.equal(10);
-                    // determine that the results have the expected keys
-                    res.body.forEach((feat => {
-                        expect(feat).to.be.a('object');
-                        expect(feat).to.include.keys('id', 'name', 'type', 'description', 
-                            'specialization', 'benefit', 'progromaticBenefit', 'normal',
-                            'special', 'repeatable', 'selections', 'source');
-                    }))
-                });
-            });
-        });
-        describe('Races GET endpoint', function(){
-            it('should return races objects with the correct key/value pairs', function() {
-                return chai.request(app)
-			    // make a get call
-                .get('/api/races')
-                .set('Authorization', `Bearer ${token}`)
-                .then(function(res) {
-                    // determine that status and return data type are correct
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.json;
-                    expect(res.body).to.be.a("array");
-                    // the number known to be in the DB 
-                    expect(res.body.length).to.equal(10);
-                    // determine that the results have the expected keys
-                    res.body.forEach((race => {
-                        expect(race).to.be.a('object');
-                        expect(race).to.include.keys('id', 'name', 'expand', 'standardRacialTraits');
-                    }))
-                });
-            });
-        });
-        describe('Spells GET endpoint', function(){
-            it('should return spells objects with the correct key/value pairs', function() {
-                return chai.request(app)
-			    // make a get call
-                .get('/api/spells')
-                .set('Authorization', `Bearer ${token}`)
-                .then(function(res) {
-                    // determine that status and return data type are correct
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.json;
-                    expect(res.body).to.be.a("array");
-                    // the number known to be in the DB 
-                    expect(res.body.length).to.equal(10);
-                    // determine that the results have the expected keys
-                    res.body.forEach((spell => {
-                        expect(spell).to.be.a('object');
-                        expect(spell).to.include.keys('id', 'name', 'school', 'level', 'casting', 'effect', 'description');
-                    }))
-                });
-            });
-        });
-        describe('Traits GET endpoint', function(){
-            it('should return traits objects with the correct key/value pairs', function() {
-                return chai.request(app)
-			    // make a get call
-                .get('/api/traits')
-                .set('Authorization', `Bearer ${token}`)
-                .then(function(res) {
-                    // determine that status and return data type are correct
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.json;
-                    expect(res.body).to.be.a("array");
-                    // the number known to be in the DB 
-                    expect(res.body.length).to.equal(10);
-                    // determine that the results have the expected keys
-                    res.body.forEach((trait => {
-                        expect(trait).to.be.a('object');
-                        expect(trait).to.include.keys('id', 'URL', 'Name-Original', 'Type', 'Category', 'Name', 
-                            'Req-Race1', 'Req-Race2', 'Req-Class', 'Req-Align', 'Req-Other', 'Req-Faith', 'Req-Place',
-                            'Description', 'Source');
-                    }))
-                });
-            });
-        });
-        describe('Equipment GET endpoint', function(){
-          describe('Armor GET endpoint', function(){  
-            it('should return armor objects with the correct key/value pairs', function() {
-              return chai.request(app)
-              // make a get call
-              .get('/api/armors')
-              .set('Authorization', `Bearer ${token}`)
-              .then(function(res) {
-                // determine that status and return data type are correct
-                expect(res).to.have.status(200);
-                expect(res).to.be.json;
-                expect(res.body).to.be.a("array");
-                // the number known to be in the DB 
-                expect(res.body.length).to.equal(10);
-                // determine that the results have the expected keys
-                res.body.forEach((armor => {
-                  expect(armor).to.be.a('object');
-                  expect(armor).to.include.keys('id', 'name', 'expand', 'description', 'use', 'cost', 
-                    'bonus', 'maxDexBonus', 'armorCheckPenalty', 'arcaneSpellFailureChance', 'speed', 
-                    'weight', 'material', 'masterwork');
-                }))
-              });
-            });
-          });
-          describe('Goods and Services GET endpoint', function(){  
-            it('should return G&S objects with the correct key/value pairs', function() {
-              return chai.request(app)
-              // make a get call
-              .get('/api/goodsAndServices')
-              .set('Authorization', `Bearer ${token}`)
-              .then(function(res) {
-                // determine that status and return data type are correct
-                expect(res).to.have.status(200);
-                expect(res).to.be.json;
-                expect(res.body).to.be.a("array");
-                // the number known to be in the DB 
-                expect(res.body.length).to.equal(10);
-                // determine that the results have the expected keys
-                res.body.forEach((gs => {
-                  expect(gs).to.be.a('object');
-                  expect(gs).to.include.keys('id', 'name', 'expand', 'description', 'type', 'isCollection', 
-                    'cost', 'weight');
-                }))
-              });
-            });
-          });
-          describe('Trade Goods GET endpoint', function(){  
-            it('should return trade goods objects with the correct key/value pairs', function() {
-              return chai.request(app)
-              // make a get call
-              .get('/api/tradeGoods')
-              .set('Authorization', `Bearer ${token}`)
-              .then(function(res) {
-                // determine that status and return data type are correct
-                expect(res).to.have.status(200);
-                expect(res).to.be.json;
-                expect(res.body).to.be.a("array");
-                // the number known to be in the DB 
-                expect(res.body.length).to.equal(10);
-                // determine that the results have the expected keys
-                res.body.forEach((tg => {
-                  expect(tg).to.be.a('object');
-                  expect(tg).to.include.keys('id', 'name', 'expand', 'description', 'cost', 'item');
-                }))
-              });
-            });
-          });
-          describe('Weapons GET endpoint', function(){  
-            it('should return trade goods objects with the correct key/value pairs', function() {
-              return chai.request(app)
-              // make a get call
-              .get('/api/weapons')
-              .set('Authorization', `Bearer ${token}`)
-              .then(function(res) {
-                // determine that status and return data type are correct
-                expect(res).to.have.status(200);
-                expect(res).to.be.json;
-                expect(res.body).to.be.a("array");
-                // the number known to be in the DB 
-                expect(res.body.length).to.equal(10);
-                // determine that the results have the expected keys
-                res.body.forEach((weapon => {
-                  expect(weapon).to.be.a('object');
-                  expect(weapon).to.include.keys('id', 'name', 'expand', 'description', 'category', 'use', 
-                    'cost', 'dmgS', 'dmgM', 'critical', 'range', 'weight', 'type', 'special', 'material', 'masterwork');
-                }))
-              });
-            });
-          });
-        });
-        describe('Druid GET endpoint', function(){  
-          it('should return Druid option objects with the correct key/value pairs', function() {
-            return chai.request(app)
-            // make a get call
-            .get('/api/druidsNatureBonds')
-            .set('Authorization', `Bearer ${token}`)
-            .then(function(res) {
-              // determine that status and return data type are correct
-              expect(res).to.have.status(200);
-              expect(res).to.be.json;
-              expect(res.body).to.be.a("array");
-              // the number known to be in the DB 
-              expect(res.body.length).to.equal(20);
-              // determine that the results have the expected keys
-              res.body.forEach((options => {
-                expect(options).to.be.a('object');
-                if(options.startingStatistics === undefined){
-                  expect(options).to.include.keys('id', 'name', 'type', 'description', 
-                    'grantedPowers', 'domainSpells', 'subdomains');
-                } else {
-                  expect(options).to.include.keys('id', 'name', 'type', 'startingStatistics', 'advancement');
-                }
-              }))
-            });
-          });
         });
     });
 
-/*      it('should 200 on GET requests', function() {
+    // strategy for all get calls:
+		// make a get call
+		// determine that status and return data type are correct
+		// determine that number of returned objects is equal to 
+    // the number known to be in the DB (10)
+    // determine that the results have the expected keys and values
+/* 
+    describe('aasimarHeritages GET endpoint', function(){
+        it('should return heritage objects with the correct key/value pairs', function() {
             return chai.request(app)
+      // make a get call
+            .get('/api/aasimarHeritages')
+            .set('Authorization', `Bearer ${token}`)
+            .then(function(res) {
+                // determine that status and return data type are correct
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a("array");
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((heritage => {
+                    expect(heritage).to.be.a('object');
+                    expect(heritage).to.include.keys('id', 'name', 'standardRacialTraits');
+                    expect(heritage.standardRacialTraits).to.include.keys('blurb', 'base', 'racial');
+                }))
+            });
+        });
+    });
+    describe('bloodlines GET endpoint', function(){
+        it('should return bloodline objects with the correct key/value pairs', function() {
+            return chai.request(app)
+      // make a get call
+            .get('/api/bloodlines')
+            .set('Authorization', `Bearer ${token}`)
+            .then(function(res) {
+                // determine that status and return data type are correct
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a("array");
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((bloodline => {
+                    expect(bloodline).to.be.a('object');
+                    expect(bloodline).to.include.keys('id', 'type', 'name', 'description', 'classSkill', 
+                    'bonusSpells', 'bonusFeats', 'bloodlineArcana', 'bloodlinePowers');
+                }))
+            });
+        });
+    });
+    describe('char class GET endpoint', function(){
+        it('should return charClass objects with the correct key/value pairs', function() {
+            return chai.request(app)
+      // make a get call
+            .get('/api/charClasses')
+            .set('Authorization', `Bearer ${token}`)
+            .then(function(res) {
+                // determine that status and return data type are correct
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a("array");
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((bloodline => {
+                    expect(bloodline).to.be.a('object');
+                    expect(bloodline).to.include.keys('id', 'name', 'classFeatures');
+                    expect(bloodline.classFeatures).to.include.keys('blurb', 'alignment', 'hd', 'wealth',
+                        'skills', 'classSkills', 'bab', 'goodSaves', 'proficiency', 'table');
+                }))
+            });
+        });
+    });
+    describe('deities GET endpoint', function(){
+        it('should return deity objects with the correct key/value pairs', function() {
+            return chai.request(app)
+      // make a get call
+            .get('/api/deities')
+            .set('Authorization', `Bearer ${token}`)
+            .then(function(res) {
+                // determine that status and return data type are correct
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a("array");
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((deity => {
+                    expect(deity).to.be.a('object');
+                    expect(deity).to.include.keys('id', 'name', 'overview');
+                    expect(deity.overview).to.include.keys('titles', 'home', 'alignment', 'areasOfConcern',
+                        'worshipers', 'clericAlignments', 'domains', 'subdomains', 'favoredWeapon', 'symbol',
+                        'sacredAnimal', 'sacredColors');
+                }))
+            });
+        });
+    });
+    describe('domains GET endpoint', function(){
+        it('should return domain objects with the correct key/value pairs', function() {
+            return chai.request(app)
+      // make a get call
             .get('/api/domains')
+            .set('Authorization', `Bearer ${token}`)
             .then(function(res) {
+                // determine that status and return data type are correct
                 expect(res).to.have.status(200);
                 expect(res).to.be.json;
                 expect(res.body).to.be.a("array");
-                expect(res.body.length).to.be.at.least(1);
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((domain => {
+                    expect(domain).to.be.a('object');
+                    expect(domain).to.include.keys('id', 'name', 'type', 'description', 
+                        'grantedPowers', 'domainSpells', 'subdomains');
+                }))
             });
         });
-
-        it('should 200 on GET requests', function() {
+    });
+    describe('feats GET endpoint', function(){
+        it('should return feats objects with the correct key/value pairs', function() {
             return chai.request(app)
-            .get('/api/druidsNatureBonds')
-            .then(function(res) {
-                expect(res).to.have.status(200);
-                expect(res).to.be.json;
-                expect(res.body).to.be.a("array");
-                expect(res.body.length).to.be.at.least(1);
-            });
-        });
-
-        it('should 200 on GET requests', function() {
-            return chai.request(app)
+      // make a get call
             .get('/api/feats')
+            .set('Authorization', `Bearer ${token}`)
             .then(function(res) {
+                // determine that status and return data type are correct
                 expect(res).to.have.status(200);
                 expect(res).to.be.json;
                 expect(res.body).to.be.a("array");
-                expect(res.body.length).to.be.at.least(1);
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((feat => {
+                    expect(feat).to.be.a('object');
+                    expect(feat).to.include.keys('id', 'name', 'type', 'description', 
+                        'specialization', 'benefit', 'progromaticBenefit', 'normal',
+                        'special', 'repeatable', 'selections', 'source');
+                }))
             });
         });
-
-        it('should 200 on GET requests', function() {
+    });
+    describe('Races GET endpoint', function(){
+        it('should return races objects with the correct key/value pairs', function() {
             return chai.request(app)
+      // make a get call
             .get('/api/races')
+            .set('Authorization', `Bearer ${token}`)
             .then(function(res) {
+                // determine that status and return data type are correct
                 expect(res).to.have.status(200);
                 expect(res).to.be.json;
                 expect(res.body).to.be.a("array");
-                expect(res.body.length).to.be.at.least(1);
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((race => {
+                    expect(race).to.be.a('object');
+                    expect(race).to.include.keys('id', 'name', 'expand', 'standardRacialTraits');
+                }))
             });
         });
-
-        it('should 200 on GET requests', function() {
+    });
+    describe('Spells GET endpoint', function(){
+        it('should return spells objects with the correct key/value pairs', function() {
             return chai.request(app)
+      // make a get call
             .get('/api/spells')
+            .set('Authorization', `Bearer ${token}`)
             .then(function(res) {
+                // determine that status and return data type are correct
                 expect(res).to.have.status(200);
                 expect(res).to.be.json;
                 expect(res.body).to.be.a("array");
-                expect(res.body.length).to.be.at.least(1);
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((spell => {
+                    expect(spell).to.be.a('object');
+                    expect(spell).to.include.keys('id', 'name', 'school', 'level', 'casting', 'effect', 'description');
+                }))
             });
         });
-
-        it('should 200 on GET requests', function() {
+    });
+    describe('Traits GET endpoint', function(){
+        it('should return traits objects with the correct key/value pairs', function() {
             return chai.request(app)
+      // make a get call
             .get('/api/traits')
+            .set('Authorization', `Bearer ${token}`)
             .then(function(res) {
+                // determine that status and return data type are correct
                 expect(res).to.have.status(200);
                 expect(res).to.be.json;
                 expect(res.body).to.be.a("array");
-                expect(res.body.length).to.be.at.least(1);
+                // the number known to be in the DB 
+                expect(res.body.length).to.equal(10);
+                // determine that the results have the expected keys
+                res.body.forEach((trait => {
+                    expect(trait).to.be.a('object');
+                    expect(trait).to.include.keys('id', 'URL', 'Name-Original', 'Type', 'Category', 'Name', 
+                        'Req-Race1', 'Req-Race2', 'Req-Class', 'Req-Align', 'Req-Other', 'Req-Faith', 'Req-Place',
+                        'Description', 'Source');
+                }))
             });
-        }); */
+        });
+    });
+    describe('Equipment GET endpoint', function(){
+      describe('Armor GET endpoint', function(){  
+        it('should return armor objects with the correct key/value pairs', function() {
+          return chai.request(app)
+          // make a get call
+          .get('/api/armors')
+          .set('Authorization', `Bearer ${token}`)
+          .then(function(res) {
+            // determine that status and return data type are correct
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.a("array");
+            // the number known to be in the DB 
+            expect(res.body.length).to.equal(10);
+            // determine that the results have the expected keys
+            res.body.forEach((armor => {
+              expect(armor).to.be.a('object');
+              expect(armor).to.include.keys('id', 'name', 'expand', 'description', 'use', 'cost', 
+                'bonus', 'maxDexBonus', 'armorCheckPenalty', 'arcaneSpellFailureChance', 'speed', 
+                'weight', 'material', 'masterwork');
+            }))
+          });
+        });
+      });
+      describe('Goods and Services GET endpoint', function(){  
+        it('should return G&S objects with the correct key/value pairs', function() {
+          return chai.request(app)
+          // make a get call
+          .get('/api/goodsAndServices')
+          .set('Authorization', `Bearer ${token}`)
+          .then(function(res) {
+            // determine that status and return data type are correct
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.a("array");
+            // the number known to be in the DB 
+            expect(res.body.length).to.equal(10);
+            // determine that the results have the expected keys
+            res.body.forEach((gs => {
+              expect(gs).to.be.a('object');
+              expect(gs).to.include.keys('id', 'name', 'expand', 'description', 'type', 'isCollection', 
+                'cost', 'weight');
+            }))
+          });
+        });
+      });
+      describe('Trade Goods GET endpoint', function(){  
+        it('should return trade goods objects with the correct key/value pairs', function() {
+          return chai.request(app)
+          // make a get call
+          .get('/api/tradeGoods')
+          .set('Authorization', `Bearer ${token}`)
+          .then(function(res) {
+            // determine that status and return data type are correct
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.a("array");
+            // the number known to be in the DB 
+            expect(res.body.length).to.equal(10);
+            // determine that the results have the expected keys
+            res.body.forEach((tg => {
+              expect(tg).to.be.a('object');
+              expect(tg).to.include.keys('id', 'name', 'expand', 'description', 'cost', 'item');
+            }))
+          });
+        });
+      });
+      describe('Weapons GET endpoint', function(){  
+        it('should return trade goods objects with the correct key/value pairs', function() {
+          return chai.request(app)
+          // make a get call
+          .get('/api/weapons')
+          .set('Authorization', `Bearer ${token}`)
+          .then(function(res) {
+            // determine that status and return data type are correct
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.a("array");
+            // the number known to be in the DB 
+            expect(res.body.length).to.equal(10);
+            // determine that the results have the expected keys
+            res.body.forEach((weapon => {
+              expect(weapon).to.be.a('object');
+              expect(weapon).to.include.keys('id', 'name', 'expand', 'description', 'category', 'use', 
+                'cost', 'dmgS', 'dmgM', 'critical', 'range', 'weight', 'type', 'special', 'material', 'masterwork');
+            }))
+          });
+        });
+      });
+    });
+    describe('Druid GET endpoint', function(){  
+      it('should return Druid option objects with the correct key/value pairs', function() {
+        return chai.request(app)
+        // make a get call
+        .get('/api/druidsNatureBonds')
+        .set('Authorization', `Bearer ${token}`)
+        .then(function(res) {
+          // determine that status and return data type are correct
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a("array");
+          // the number known to be in the DB 
+          expect(res.body.length).to.equal(20);
+          // determine that the results have the expected keys
+          res.body.forEach((options => {
+            expect(options).to.be.a('object');
+            if(options.startingStatistics === undefined){
+              expect(options).to.include.keys('id', 'name', 'type', 'description', 
+                'grantedPowers', 'domainSpells', 'subdomains');
+            } else {
+              expect(options).to.include.keys('id', 'name', 'type', 'startingStatistics', 'advancement');
+            }
+          }))
+        });
+      });
+    }); */
+    describe('Character GET endpoint', function(){
+      it('should return Character objects with the correct key/values pairs', function(){
+        return chai.request(app)
+        .get('/api/users/characters')
+        .set('Authorization', `Bearer ${token}`)
+        .then(function(res){
+          // determine that status and return data type are correct
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a("array");
+          // the number known to be in the DB 
+          expect(res.body.length).to.equal(2);
+          // determine that the results have the expected keys
+          res.body.forEach((options => {
+            expect(options).to.be.a('object');
+          }))
+        });
+      });
+    });
+    describe('Character POST endpoint', function(){
+      it('should return 201 with matching data', function(){
+        return chai.request(app)
+        .get('/api/users')
+        .set('Authorization', `Bearer ${token}`)
+        .then(function(res){
+          // this will set the testUserID to the first user id returned by the .find()
+          let testUserID = res.body._id;
+          generateSingleCharacter()
+          .then(function (res){
+            let data = res;
+            return chai.request(app)
+						.post('/api/users/characters')
+						.send(data)
+						.then(function(res){
+							expect(res).to.have.status(201);
+							expect(res).to.be.json;
+              expect(res.body).to.be.a('object');
+              expect(res.body).to.have.keys('userID', 'characterStats', 'charClass', 'featSlots',
+              'traitSlots', 'preferences', 'race', 'details', 'goldMethod', 'gold', 'availableGold',
+              'gear', 'abilityScoreGenerationMethod',);
+              expect(res.body.userID).to.equal(testUserID);
+							expect(res.body.characterStats).to.equal(data.characterStats);
+							expect(res.body.charClass).to.equal(data.charClass);
+							expect(res.body.featSlots).to.equal(data.featSlots);
+							expect(res.body.traitSlots).to.equal(data.traitSlots);
+							expect(res.body.preferences).to.equal(data.preferences);
+							expect(res.body.race).to.equal(data.race);
+							expect(res.body.details).to.equal(data.details);
+							expect(res.body.goldMethod).to.equal(data.goldMethod);
+							expect(res.body.gold).to.equal(data.gold);
+							expect(res.body.availableGold).to.equal(data.availableGold);
+							expect(res.body.gear).to.equal(data.gear);
+							expect(res.body.abilityScoreGenerationMethod).to.equal(data.abilityScoreGenerationMethod);
+            })
+					});
+        })        
+      })
+    })
+  });
 });
 
 // used to put randomish documents in db
@@ -560,10 +558,10 @@ describe('tests', function() {
 function seedUser(){
 	console.info('seeding user data');
 
-    let seedUserData = generateUserData();
-	userCredentials.email = seedUserData.email;
-    userCredentials.password = seedUserData.password;
-    return User.create(seedUserData);
+  let seedUserData = generateUserData();
+  userCredentials.email = seedUserData.email;
+  userCredentials.password = seedUserData.password;
+  return User.create(seedUserData);
 }
 // generates a fake User object for testing
 function generateUserData(){
@@ -660,7 +658,7 @@ function generateBloodlinesData(){
         description: faker.lorem.text,
         classSkill: faker.lorem.sentence,
         bonusSpells: generateSpellsArray(),
-        bonusFeats: generateFeatsArray(8),
+        bonusFeats: generateFeatsNamesArray(8),
         bloodlineArcana: faker.lorem.sentence,
         bloodlinePowers: {
             description: faker.lorem.text,
@@ -688,7 +686,7 @@ function generateSpellsArray(){
     }
     return array;
 }
-function generateFeatsArray(num){
+function generateFeatsNamesArray(num){
     let array = [];
     for(let i=0;i<num;i++){
         array.push({
@@ -1084,7 +1082,6 @@ function seedDruidData(){
 
   return AnimalCompanion.insertMany(seedAnimalCompanionData);
 }
-
 function generateAnimalCompanionData(){
   return {
     type:"animal companion",
@@ -1131,10 +1128,320 @@ function generateAnimalCompanionData(){
   }
 }
 
+function seedCharacterData(){
+  console.info('seeding Character data');
+  let ObjectIdReferanceValues = { 
+    userID:[],
+    charClass:[],
+    featSlots:[],
+    traitSlots:[],
+    race:[],
+    armor:[],
+    weapon:[],
+    tradeGoods:[],
+    goodsAndServices:[],
+  };
+  const seedData = [];
 
+  return findCharClassPromise(ObjectIdReferanceValues)
+  .then(function(){
+    return findFeatPromise(ObjectIdReferanceValues)
+    .then(function(){
+      return findTraitPromise(ObjectIdReferanceValues)
+      .then(function(){
+        return findRacePromise(ObjectIdReferanceValues)
+        .then(function(){
+          return findArmorPromise(ObjectIdReferanceValues)
+          .then(function(){
+            return findWeaponPromise(ObjectIdReferanceValues)
+            .then(function(){
+              return findTradeGoodsPromise(ObjectIdReferanceValues)
+              .then(function(){
+                return findGoodsAndServicePromise(ObjectIdReferanceValues)
+                .then(function(){
+                  return findUserIDPromise(ObjectIdReferanceValues)
+                  .then(function(){
+                    for(let i=0; i<2; i++){
+                      let data = [];
+                      data = generateCharacterData(i, ObjectIdReferanceValues);
+                      seedData.push(data);
+                    }; 
+                    
+                    return Character.insertMany(seedData);
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+}
 
+// slightly modified for use in character post endpoint
+function generateSingleCharacter(userID){
+  console.info('seeding Character data');
+  let ObjectIdReferanceValues = { 
+    userID:[],
+    charClass:[],
+    featSlots:[],
+    traitSlots:[],
+    race:[],
+    armor:[],
+    weapon:[],
+    tradeGoods:[],
+    goodsAndServices:[],
+  };
+  const seedData = [];
 
+  return findCharClassPromise(ObjectIdReferanceValues)
+  .then(function(){
+    return findFeatPromise(ObjectIdReferanceValues)
+    .then(function(){
+      return findTraitPromise(ObjectIdReferanceValues)
+      .then(function(){
+        return findRacePromise(ObjectIdReferanceValues)
+        .then(function(){
+          return findArmorPromise(ObjectIdReferanceValues)
+          .then(function(){
+            return findWeaponPromise(ObjectIdReferanceValues)
+            .then(function(){
+              return findTradeGoodsPromise(ObjectIdReferanceValues)
+              .then(function(){
+                return findGoodsAndServicePromise(ObjectIdReferanceValues)
+                .then(function(){
+                  return findUserIDPromise(ObjectIdReferanceValues)
+                  .then(function(){
+                      let data = [];
+                      data = generateCharacterData(0, ObjectIdReferanceValues);
+                      seedData.push(data);
+                    
+                    return Character.insertMany(seedData);
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+}
 
+function findCharClassPromise(ObjectIdReferanceValues){
+  return new Promise((resolve, reject) => {
+    CharClass.find().limit(2).then(charClasses => {
+      for(let i=0;i<2;i++){
+        ObjectIdReferanceValues.charClass.push(charClasses[i]._id);
+      }
+      resolve();
+    }, () => {
+      // failed
+      console.log("CharClass failed");
+      reject();
+    })
+  })
+};
+function findFeatPromise(ObjectIdReferanceValues){
+  return new Promise((resolve, reject) => {
+    Feat.find().limit(2).then(feats => {
+      for(let i=0;i<2;i++){
+        ObjectIdReferanceValues.featSlots.push(feats[i]._id);
+      }
+      resolve();
+    }, () => {
+      // failed
+      console.log("FeatSlots failed");
+      reject();
+    })
+  })
+};
+function findTraitPromise(ObjectIdReferanceValues){
+  return new Promise((resolve, reject) => {
+    Trait.find().limit(2).then(traits => {
+      for(let i=0;i<2;i++){
+        ObjectIdReferanceValues.traitSlots.push(traits[i]._id);
+      }
+      resolve();
+    }, () => {
+      // failed
+      console.log("TraitSlots failed");
+      reject();
+    })
+  })
+};
+function findRacePromise(ObjectIdReferanceValues){
+  return new Promise((resolve, reject) => {
+    Race.find().limit(2).then(races => {
+      for(let i=0;i<2;i++){
+        ObjectIdReferanceValues.race.push(races[i]._id);
+      }
+      resolve();
+    }, () => {
+      // failed
+      console.log("TraitSlots failed");
+      reject();
+    })
+  })
+};
+function findArmorPromise(ObjectIdReferanceValues){
+  return new Promise((resolve, reject) => {
+    Armor.find().limit(2).then(armor => {
+      for(let i=0;i<2;i++){
+        ObjectIdReferanceValues.armor.push(armor[i]._id);
+      }
+      resolve();
+    }, () => {
+      // failed
+      console.log("Armor failed");
+      reject();
+    })
+  })
+};
+function findWeaponPromise(ObjectIdReferanceValues){
+  return new Promise((resolve, reject) => {
+    Weapon.find().limit(2).then(weapons => {
+      for(let i=0;i<2;i++){
+        ObjectIdReferanceValues.weapon.push(weapons[i]._id);
+      }
+      resolve();
+    }, () => {
+      // failed
+      console.log("Weapon failed");
+      reject();
+    })
+  })
+};
+function findTradeGoodsPromise(ObjectIdReferanceValues){
+  return new Promise((resolve, reject) => {
+    TradeGoods.find().limit(2).then(tradeGoods => {
+      for(let i=0;i<2;i++){
+        ObjectIdReferanceValues.tradeGoods.push(tradeGoods[i]._id);
+      }
+      resolve();
+    }, () => {
+      // failed
+      console.log("TradeGoods failed");
+      reject();
+    })
+  })
+};
+function findGoodsAndServicePromise(ObjectIdReferanceValues){
+  return new Promise((resolve, reject) => {
+    GoodsAndService.find().limit(2).then(goodsAndServices => {
+      for(let i=0;i<2;i++){
+        ObjectIdReferanceValues.goodsAndServices.push(goodsAndServices[i]._id);
+      }
+      resolve();
+    }, () => {
+      // failed
+      console.log("GoodsAndService failed");
+      reject();
+    })
+  })
+};
+function findUserIDPromise(ObjectIdReferanceValues){
+  return new Promise((resolve, reject) => {
+    User.find().limit(1).then(users => {
+      ObjectIdReferanceValues.goodsAndServices.push(users[0]._id);
+      resolve();
+    }, () => {
+      // failed
+      console.log("Users failed");
+      reject();
+    })
+  })  
+};
+
+function generateCharacterData(index, ObjectIdReferanceValues){
+  return {
+    userID:mongoose.Types.ObjectId(ObjectIdReferanceValues.userID[0]),
+    characterStats:generateStatsArray(3),
+    charClass:mongoose.Types.ObjectId(ObjectIdReferanceValues.charClass[index]),
+    featSlots:mongoose.Types.ObjectId(ObjectIdReferanceValues.featSlots[index]),
+    traitSlots:mongoose.Types.ObjectId(ObjectIdReferanceValues.traitSlots[index]),
+    preferences:{
+      advancement:faker.lorem.sentence,
+      hpProcess:faker.lorem.sentence,
+    },
+    race:mongoose.Types.ObjectId(ObjectIdReferanceValues.race[index]),
+    details:{
+      age: faker.lorem.sentence,
+      alignments:faker.lorem.sentence,
+      allies: faker.lorem.sentence,
+      backstory: faker.lorem.sentence,
+      enemies: faker.lorem.sentence,
+      eyes: faker.lorem.sentence,
+      flaws: faker.lorem.sentence,
+      gender: faker.lorem.sentence,
+      hair: faker.lorem.sentence,
+      ideals: faker.lorem.sentence,
+      organizations:faker.lorem.sentence,
+      other: faker.lorem.sentence,
+      personalityTraits:faker.lorem.sentence,
+      skin: faker.lorem.sentence,
+      weight: faker.lorem.sentence,
+    },
+    goldMethod: faker.lorem.sentence,
+    gold:faker.random.number({min:70, max:200}),
+    availableGold:faker.random.number({min:70, max:200}),
+    gear:{
+      armor:[mongoose.Types.ObjectId(ObjectIdReferanceValues.armor[index]),],
+      weapon:[mongoose.Types.ObjectId(ObjectIdReferanceValues.weapon[index]),],
+      tradeGoods:[mongoose.Types.ObjectId(ObjectIdReferanceValues.tradeGoods[index]),],
+      goodsAndServices:[mongoose.Types.ObjectId(ObjectIdReferanceValues.goodsAndServices[index]),],
+    },
+    abilityScoreGenerationMethod:faker.lorem.sentence,
+  }
+}
+function generateStatsArray(num){
+  let array = [];
+  for(let i=0; i<num;i++){
+    let data = {
+      name:faker.company.companyName(),
+      flag:false,
+      bonuses:generateArrayOfFullBonusObjects(5),
+      sum:{
+        total:faker.random.number({min:7, max:20}),
+        bonuses:generateArrayOfFullBonusObjects(5),
+      }
+    };
+    array.push(data);
+  }
+  return array;
+}
+function generateArrayOfFullBonusObjects(num){
+  let array = [];
+  for(let i=0; i<num;i++){
+    array.push(generateFullBonusObjectData());
+  }
+  return array;
+}
+function generateFullBonusObjectData(){
+  return{
+    name:faker.company.companyName(),    
+    source:faker.lorem.sentence,
+    stat:faker.lorem.sentence,
+    type:faker.lorem.sentence,
+    duration:-1,
+    amount:faker.random.number({min:-2, max:2}),
+  }
+}
+function generateFeatsArray(num){
+  let array = [];
+  for(let i=0; i<num;i++){
+    array.push(generateFeatsData());
+  }
+  return array;
+}
+function generateTraitsArray(num){
+  let array = [];
+  for(let i=0; i<num;i++){
+    array.push(generateTraitsData());
+  }
+  return array;
+}
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below
 // to ensure data from one test does not stick
