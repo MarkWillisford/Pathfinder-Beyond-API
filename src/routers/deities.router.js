@@ -6,19 +6,18 @@ const router = express.Router();
 
 require('../strategy/jwt.strategy')(passport);
 
-const Race = require('../models/race.model');
+const Deity = require('../models/deity.model');
 
 router.route('/')
   .get(passport.authenticate('jwt', { session: false }), (req, res) => {
-    Race
+    Deity
       .find()
-      .then(races => {
-        res.json(races.map(race => {
+      .then(deities => {
+        res.json(deities.map(deity => {
           return {
-            id: race._id,
-            name: race.name,
-            expand: race.expand,
-            standardRacialTraits: race.standardRacialTraits,
+            id: deity._id,
+            name: deity.name,
+            overview: deity.overview,
           };
         }));
       })
