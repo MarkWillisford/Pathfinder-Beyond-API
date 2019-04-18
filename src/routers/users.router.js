@@ -54,10 +54,6 @@ router.route('/')
 // and the requiredFields
 router.post('/login', disableWithToken, requiredFields('email', 'password'), (req, res) => {
   // Assuming you have both we look for a user with that email
-  console.log('in login route, line 57');
-  console.log(req.body.email);
-  console.log(req.body.password);
-
     User.findOne({ email: req.body.email })
     .then((foundResult) => {
     	// if we didn't find it
@@ -70,6 +66,8 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
         return foundResult;
     })
     .then((foundUser) => {
+      console.log(foundUser);
+
     	// okay we found a user, compare the password
         foundUser.comparePassword(req.body.password)
         .then((comparingResult) => {
@@ -94,7 +92,7 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
         });
     })
     .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report)));
-}); 
+});
 
 // This route is to save ( post ) and load (get) finished characters
 router.route('/characters')
