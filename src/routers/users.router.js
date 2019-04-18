@@ -18,10 +18,12 @@ router.route('/')
 	// first it tries the middleware function disableWithToken, which checks to see if 
 	// there is an authorization token in the header, if so it returns with an error
 	// if we pass that, we call the requiredFields middleware which checks 
-	.post(disableWithToken, requiredFields('email', 'username', 'password'), (req, res) => {
+	.post(disableWithToken, requiredFields('email', 'username', 'password', 'firstName' ,'lastName'), (req, res) => {
 		// assuming it passes all tests, we create a user from the req data
 		User.create({
 			email: req.body.email,
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
 			password: req.body.password,
 			username: req.body.username,
 		})
@@ -51,7 +53,11 @@ router.route('/')
 // To access the login page, we run through the disableWithToken
 // and the requiredFields
 router.post('/login', disableWithToken, requiredFields('email', 'password'), (req, res) => {
-	// Assuming you have both we look for a user with that email
+  // Assuming you have both we look for a user with that email
+  console.log('in login route, line 57');
+  console.log(req.body.email);
+  console.log(req.body.password);
+
     User.findOne({ email: req.body.email })
     .then((foundResult) => {
     	// if we didn't find it
@@ -80,9 +86,6 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
                 email: foundUser.email,
                 username: foundUser.username,
                 role: foundUser.role,
-                monthlyIncomeGoal: foundUser.monthlyIncomeGoal,
-                monthlyHourlyGoal: foundUser.monthlyHourlyGoal,
-                hourlyWage: foundUser.hourlyWage
             }; // send it off in a token
             const token = jwt.sign(tokenPayload, config.SECRET, {
                 expiresIn: config.EXPIRATION,

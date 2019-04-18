@@ -126,8 +126,10 @@ describe('tests', function() {
 					})
 					.then(function(resUser){
 						expect(resUser.id).to.equal(user.id);
-						expect(resUser.email).to.equal(user.email);
+						//expect(resUser.email).to.equal(user.email);
 						expect(resUser.username).to.equal(user.username);
+						expect(resUser.firstName).to.equal(user.firstName);
+						expect(resUser.lastName).to.equal(user.lastName);
 						expect(resUser.password).to.equal(user.password);
 						expect(resUser.role).to.equal(user.role);
 					});				
@@ -145,9 +147,11 @@ describe('tests', function() {
 					    expect(res).to.be.json;
 					    expect(res.body).to.be.a('object');
 					    expect(res.request._data).to.include.keys(
-					      'email', 'username', 'password');
+					      'email', 'username', 'password', 'firstName', 'lastName');
 					    expect(res.request._data.email.toLowerCase()).to.equal(testUser.email.toLowerCase());
 					    expect(res.request._data.username).to.equal(testUser.username);
+					    expect(res.request._data.firstName).to.equal(testUser.firstName);
+					    expect(res.request._data.lastName).to.equal(testUser.lastName);
 					    expect(res.request._data.password).to.not.be.null;
 	    									
 	    				return User.findById(res.body.id);
@@ -171,7 +175,7 @@ describe('tests', function() {
 		// determine that number of returned objects is equal to 
     // the number known to be in the DB (10)
     // determine that the results have the expected keys and values
-/* 
+ 
     describe('aasimarHeritages GET endpoint', function(){
         it('should return heritage objects with the correct key/value pairs', function() {
             return chai.request(app)
@@ -488,7 +492,7 @@ describe('tests', function() {
           }))
         });
       });
-    }); */
+    });
     describe('Character GET endpoint', function(){
       it('should return Character objects with the correct key/values pairs', function(){
         return chai.request(app)
@@ -567,7 +571,9 @@ function seedUser(){
 function generateUserData(){
 	return {
 		email: faker.internet.email(),
-		username: faker.internet.userName(),
+    username: faker.internet.userName(),
+    firstName: faker.company.companyName(),
+    lastName: faker.company.companyName(),
 		password: faker.internet.password(8),
 		role: generateRole(),
 	};
