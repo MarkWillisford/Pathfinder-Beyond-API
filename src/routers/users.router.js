@@ -84,6 +84,8 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
                 email: foundUser.email,
                 username: foundUser.username,
                 role: foundUser.role,
+                firstName:foundUser.firstName,
+                lastName: foundUser.lastName,
             }; // send it off in a token
             const token = jwt.sign(tokenPayload, config.SECRET, {
                 expiresIn: config.EXPIRATION,
