@@ -3,6 +3,7 @@
 const express = require('express');					 
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const config = require('../config/main.config');
 const errorsParser = require('../helpers/errorParser.helper');
 const disableWithToken = require('../middlewares/disableWithToken.middleware').disableWithToken;
@@ -12,6 +13,27 @@ const router = express.Router();
 
 const User = require('../models/user.model');
 const Character = require('../models/character.model');
+
+// This will accept a user and create a new token
+const createAuthToken = function(user) {
+/*   return jwt.sign({user}, config.SECRET, {
+    subject: user.username,
+    expiresIn: config.EXPIRATION,
+    //algorithm: 'HS256'
+  }); */
+  const tokenPayload = {
+    _id: user._id,
+    email: user.email,
+    username: user.username,
+    role: user.role,
+    firstName:user.firstName,
+    lastName: user.lastName,
+  }; // send it off in a token
+  const token = jwt.sign(tokenPayload, config.SECRET, {
+      expiresIn: config.EXPIRATION,
+  }); // and return it
+  return { token: token, _id: tokenPayload._id };
+};
 
 // This is our post to the /users endpoint
 router.route('/')
@@ -53,6 +75,7 @@ router.route('/')
 // To access the login page, we run through the disableWithToken
 // and the requiredFields
 router.post('/login', disableWithToken, requiredFields('email', 'password'), (req, res) => {
+  console.log("logging in");
   // Assuming you have both we look for a user with that email
     User.findOne({ email: req.body.email })
     .then((foundResult) => {
@@ -94,6 +117,16 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
         });
     })
     .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report)));
+});
+
+const jwtAuth = passport.authenticate('jwt', {session: false});
+// The user exchanges a valid JWT for a new one with a later expiration
+router.post('/refresh', jwtAuth, (req, res) => {
+  console.log("refreshing token");
+  const authToken = createAuthToken(req.user);
+  console.log(`sending back `);
+  console.log(authToken);
+  res.json(authToken);
 });
 
 // This route is to save ( post ) and load (get) finished characters
@@ -152,7 +185,29 @@ router.route('/characters')
 
     // first the .get()
   .get(passport.authenticate('jwt', { session: false }), (req, res) => {
-  Character.find().then(characters => {
+  User.findById(req.user._id)
+  .then(user => {
+    if(user){
+      // turn the id into the right data type to search for
+      let myObjectID = mongoose.Types.ObjectId(user._id);
+      const filters = { 
+        userID: user._id,
+      };
+      Character.find(filters)
+      .then(characters => res.json(characters))
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({error: "something went terribly wrong"});
+      });
+    } else {      
+      const message = `User not found which should never happen, contact your system admin`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  })
+  
+  
+/*   Character.find().then(characters => {
     res.json(characters.map(character => {
       return {
         id: character._id,
@@ -170,7 +225,7 @@ router.route('/characters')
         abilityScoreGenerationMethod: character.abilityScoreGenerationMethod,
       };
     }));
-  })
+  }) */
   .catch(err => {
       console.error(err);
       res.status(500).json({ message: "Internal server error" });

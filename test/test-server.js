@@ -496,20 +496,29 @@ describe('tests', function() {
     describe('Character GET endpoint', function(){
       it('should return Character objects with the correct key/values pairs', function(){
         return chai.request(app)
-        .get('/api/users/characters')
+        .get('/api/users')
         .set('Authorization', `Bearer ${token}`)
-        .then(function(res){
-          // determine that status and return data type are correct
-          expect(res).to.have.status(200);
-          expect(res).to.be.json;
-          expect(res.body).to.be.a("array");
-          // the number known to be in the DB 
-          expect(res.body.length).to.equal(2);
-          // determine that the results have the expected keys
-          res.body.forEach((options => {
-            expect(options).to.be.a('object');
-          }))
-        });
+        .then(function(_res){
+          res = _res;
+          return chai.request(app)
+          .get('/api/users/characters')
+          .set('Authorization', `Bearer ${token}`)
+          .then(function(res){
+            // determine that status and return data type are correct
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.a("array");
+            // the number known to be in the DB 
+            expect(res.body.length).to.equal(2);
+            // determine that the results have the expected keys
+            res.body.forEach((options => {
+              expect(options).to.be.a('object');
+              expect(options).to.include.keys('userID', '_id', 'characterStats', 'charClass', 'featSlots', 
+                'traitSlots', 'preferences', 'race', 'details', 'goldMethod', 'gold', 'availableGold', 
+                'gear', 'abilityScoreGenerationMethod');
+            }))
+          });
+        })
       });
     });
     describe('Character POST endpoint', function(){
@@ -1350,7 +1359,7 @@ function findGoodsAndServicePromise(ObjectIdReferanceValues){
 function findUserIDPromise(ObjectIdReferanceValues){
   return new Promise((resolve, reject) => {
     User.find().limit(1).then(users => {
-      ObjectIdReferanceValues.goodsAndServices.push(users[0]._id);
+      ObjectIdReferanceValues.userID.push(users[0]._id);
       resolve();
     }, () => {
       // failed
