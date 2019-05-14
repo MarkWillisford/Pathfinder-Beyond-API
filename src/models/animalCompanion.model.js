@@ -120,4 +120,4 @@ const animalCompanionSchema = mongoose.Schema({
   },
 }, {collection: "animalCompanions"});
 
-module.exports = mongoose.model('AnimalCompanion', animalCompanionSchema)
+module.exports = mongoose.model('AnimalCompanion', animalCompanionSchema) 

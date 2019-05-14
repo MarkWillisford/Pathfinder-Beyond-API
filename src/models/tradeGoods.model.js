@@ -21,6 +21,6 @@ const TradeGoodSchema = mongoose.Schema({
 		type: String,
 		required: true,
 	},
-})
+}, {collection: "tradeGoods"})
 
 module.exports = mongoose.model('TradeGood', TradeGoodSchema);

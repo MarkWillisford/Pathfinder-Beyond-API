@@ -13,4 +13,3 @@ module.exports = {
 		'mongodb://localhost:27017/db_pathfinder_beyond',
   EXPIRATION: 864000,
 };
-

@@ -49,6 +49,6 @@ const WeaponSchema = mongoose.Schema({
 		type: Boolean,
 		required: true,
 	},
-})
+}, {collection: "weapons"})
 
 module.exports = mongoose.model('Weapon', WeaponSchema);

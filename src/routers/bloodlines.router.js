@@ -14,6 +14,7 @@ router.route('/')
         Bloodline
             .find()
             .then(bloodlines => {
+              console.log(bloodlines);
                 res.json(bloodlines.map(bloodline => {
                     return {
                         id: bloodline._id,

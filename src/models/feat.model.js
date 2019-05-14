@@ -41,6 +41,6 @@ const FeatSchema = mongoose.Schema({
 		type: String,
 		required: true,
 	},
-})
+}, {collection: "feats"})
 
-module.exports = mongoose.model('Feat', FeatSchema);
+module.exports = mongoose.model('Feat', FeatSchema); 

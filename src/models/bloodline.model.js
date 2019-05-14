@@ -20,12 +20,9 @@ const bloodlineSchema = mongoose.Schema({
 	bonusSpells:[
 		
 	],
-	bonusFeats:[{
-		name: {
-			type: String,
-			required: true,
-		},
-	}],
+	bonusFeats:[
+    
+  ],
 	bloodlineArcana:{
 		type:String,
 		required: true,

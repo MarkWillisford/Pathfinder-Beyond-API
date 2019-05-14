@@ -75,6 +75,6 @@ const RaceSchema = mongoose.Schema({
 			required: true,
 		},
 	}
-})
+}, {collection: "races"})
 
 module.exports = mongoose.model('Race', RaceSchema);

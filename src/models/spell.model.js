@@ -49,6 +49,6 @@ const SpellSchema = mongoose.Schema({
         },
     },
     description:[],
-})
+}, {collection: "spells"}) 
 
 module.exports = mongoose.model('Spell', SpellSchema);

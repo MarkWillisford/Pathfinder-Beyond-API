@@ -61,6 +61,6 @@ const ArmorSchema = mongoose.Schema({
 		required: true,
 	},
 
-})
+}, {collection: "armors"})
 
 module.exports = mongoose.model('Armor', ArmorSchema);

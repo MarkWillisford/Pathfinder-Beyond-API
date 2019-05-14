@@ -53,7 +53,7 @@ const charClassSchema = mongoose.Schema({
       required: true, 
     }
 	}
-})
+}, {collection: "charClasses"})
 
 module.exports = mongoose.model('CharClass', charClassSchema);
 

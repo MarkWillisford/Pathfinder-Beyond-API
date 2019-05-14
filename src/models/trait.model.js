@@ -44,6 +44,6 @@ const TraitSchema = mongoose.Schema({
 		type: String,
     },
     
-})
+}, {collection: "traits"})
 
 module.exports = mongoose.model('Trait', TraitSchema);
