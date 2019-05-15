@@ -30,8 +30,10 @@
   },
   "scripts": {
     "start": "nodemon ./src/server.js",
-    "test": "mocha --timeout 5000 --exit"
+    "test": "mocha --timeout 5000 --exit",
+    "build": "webpack"
   },
+  "heroku-run-build-script": true,
   "author": "",
   "license": "ISC"
 }
