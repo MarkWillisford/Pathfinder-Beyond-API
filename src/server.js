@@ -35,12 +35,6 @@ const {CLIENT_ORIGIN} = require('./config/main.config.js');
 // log the http layer
 app.use(morgan('common'));
 
-/* app.use(
-    cors({
-        origin: CLIENT_ORIGIN
-    })
-); */
-
 // CORS
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');

@@ -81,9 +81,10 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
     .then((foundResult) => {
     	// if we didn't find it
         if (!foundResult) {
-            return res.status(400).json({
-                generalMessage: 'Email or password is incorrect',       // <!-- if this is returned the following
-            });                                                         // then statement breaks
+          console.log("bad user name");
+          return res.status(400).json({
+              generalMessage: 'Email or password is incorrect',       
+          });                                                         
         }
         // if we did we continue
         return foundResult;
@@ -96,6 +97,7 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
         .then((comparingResult) => {
         	// if false
             if (!comparingResult) {
+              console.log("bad password");
             	// return an error, exiting the chain
                 return res.status(400).json({
                     generalMessage: 'Email or password is incorrect',
