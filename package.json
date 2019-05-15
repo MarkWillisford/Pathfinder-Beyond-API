@@ -29,10 +29,10 @@
     "supertest": "^4.0.2"
   },
   "scripts": {
-    "start": "nodemon ./src/server.js",
+    "start": "node ./src/server.js",
     "test": "mocha --timeout 5000 --exit"
   },
-  "heroku-run-build-script": true,
+  
   "author": "",
   "license": "ISC"
 }
