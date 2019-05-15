@@ -4,11 +4,18 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "bcrypt": "^3.0.5",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "faker": "^4.1.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.4.19",
+    "mongoose-unique-validator": "^2.0.2",
     "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "throng": "^4.0.0",
     "travis": "^0.1.1",
     "travis-ci": "^2.2.0",
     "winston": "^3.2.1"
@@ -17,11 +24,13 @@
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "mocha": "^6.0.2",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "sinon": "^7.3.0",
+    "supertest": "^4.0.2"
   },
   "scripts": {
     "start": "nodemon ./src/server.js",
-    "test": "mocha --exit"
+    "test": "mocha --timeout 5000 --exit"
   },
   "author": "",
   "license": "ISC"

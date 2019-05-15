@@ -1,24 +1,23 @@
 'use strict';
 
-const express = require('express');
+const express = require('express');		
 const passport = require('passport');
-const router = express.Router();
+const router = express.Router();	
 
 require('../strategy/jwt.strategy')(passport);
 
-const Race = require('../models/race.model');
+const CharClass = require('../models/charClass.model');
 
 router.route('/')
   .get(passport.authenticate('jwt', { session: false }), (req, res) => {
-    Race
+    CharClass
     .find()
-    .then(races => {
-      res.json(races.map(race => {
+    .then(charClasses => {
+      res.json(charClasses.map(charClass => {
         return {
-          id: race._id,
-          name: race.name,
-          expand: race.expand,
-          standardRacialTraits: race.standardRacialTraits,
+          _id: charClass._id,
+          name: charClass.name,
+          classFeatures: charClass.classFeatures,          
         };
       }));
     })

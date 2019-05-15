@@ -1,16 +1,12 @@
 const mongoose = require('mongoose');
 
-const RaceSchema = mongoose.Schema({
+const aasimarHeritageSchema = mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
 	},
-	expand: {
-		type: Boolean,
-		required: true,
-	},
 	standardRacialTraits:{
-		blurb: {
+		blurb:{
 			type: String,
 			required: true,
 		},
@@ -18,63 +14,60 @@ const RaceSchema = mongoose.Schema({
 			abilityScoreRacialBonuses: {
 				type: String,
 				required: true,
-			},
+			}, 
 			abilityScoreRacialBonusArray:[{
-				stat: {
-					type: String,
-					required: true,
-				},
-				value: {
-					type: Number,
-					required: true,
-				},
-			}],
+					stat:{
+						type: String,
+						required: true,
+					},
+					value:{
+						type: Number,
+						required: true,
+					},
+				}], 
 			skillRacialBonusArray:[{
-				stat: {
+				stat:{
 					type: String,
 					required: true,
 				},
-				value: {
+				value:{
 					type: Number,
 					required: true,
 				},
-			}],
-			age: {
+			}], 
+			age:{
+				type: String,
+				required: true,
+			}, 
+			size:{
 				type: String,
 				required: true,
 			},
-			size: {
+			type:{
 				type: String,
 				required: true,
-			},
-			type: {
+			}, 
+			speed:{
 				type: String,
 				required: true,
-			},
-			speed: {
-				type: String,
-				required: true,
-			},
-			languages:{
-				start:[],
-				learn:[],
+			},  
+			Languages:{
+				start:[String], 
+				learn:[String], 
 			}
 		},
 		racial:[{
-			name: {
+			name:{
 				type: String,
 				required: true,
 			},
-			description: {
+			description:{
 				type: String,
 				required: true,
 			},
-		}],
-		selections: {
-			type: String,
-			required: true,
-		},
+		}]
 	}
-}, {collection: "races"})
+}, {collection: "aasimarHeritages"});
 
-module.exports = mongoose.model('Race', RaceSchema);
+
+module.exports = mongoose.model('AasimarHeritage', aasimarHeritageSchema);

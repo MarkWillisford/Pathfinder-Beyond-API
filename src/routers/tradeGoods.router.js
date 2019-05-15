@@ -6,19 +6,21 @@ const router = express.Router();
 
 require('../strategy/jwt.strategy')(passport);
 
-const Race = require('../models/race.model');
+const TradeGoods = require('../models/tradeGoods.model');
 
 router.route('/')
   .get(passport.authenticate('jwt', { session: false }), (req, res) => {
-    Race
+    TradeGoods
     .find()
-    .then(races => {
-      res.json(races.map(race => {
+    .then(tradeGoods => {
+      res.json(tradeGoods.map(tradeGood => {
         return {
-          id: race._id,
-          name: race.name,
-          expand: race.expand,
-          standardRacialTraits: race.standardRacialTraits,
+          id: tradeGood._id,
+          name: tradeGood.name,
+          expand:tradeGood.expand,
+          description:tradeGood.description,
+          cost:tradeGood.cost,
+          item:tradeGood.item,
         };
       }));
     })
@@ -28,4 +30,4 @@ router.route('/')
     });
   });
 
-module.exports = router;
+  module.exports = router;
