@@ -140,7 +140,8 @@ router.route('/characters')
     .then(user => {
       if(user){
         Character.create({
-          id: req.body._id,
+          //id: req.body._id,
+          userID:req.body.user_id,
           characterStats: req.body.characterStats,
           charClass: req.body.charClass,
           featSlots: req.body.featSlots,

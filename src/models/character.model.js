@@ -77,6 +77,9 @@ const CharacterSchema = new mongoose.Schema({
   featSlots:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Feat' }],
   traitSlots:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Trait' }],
   preferences:{
+    name:{
+      type: String,
+    },
     advancement:{
       type: String,
       required: true,
@@ -93,12 +96,15 @@ const CharacterSchema = new mongoose.Schema({
     },
     alignments: {
       type: String,
-      required: true,
+      //required: true,
     },
     allies: {
       type: String,
     },
     backstory: {
+      type: String,
+    },
+    deity: {
       type: String,
     },
     enemies: {
@@ -160,4 +166,4 @@ const CharacterSchema = new mongoose.Schema({
   },
 }, {collection: "characters"}); 
 
-module.exports = mongoose.model('Character', CharacterSchema);  
+module.exports = mongoose.model('Character', CharacterSchema);
