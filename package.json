@@ -31,7 +31,7 @@
   "scripts": {
     "start": "nodemon ./src/server.js",
     "test": "mocha --timeout 5000 --exit",
-    "build": "webpack"
+    "build": "node ./src/server.js"
   },
   "heroku-run-build-script": true,
   "author": "",
