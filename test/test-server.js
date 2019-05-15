@@ -236,7 +236,7 @@ describe('tests', function() {
                 // determine that the results have the expected keys
                 res.body.forEach((bloodline => {
                     expect(bloodline).to.be.a('object');
-                    expect(bloodline).to.include.keys('id', 'name', 'classFeatures');
+                    expect(bloodline).to.include.keys('_id', 'name', 'classFeatures');
                     expect(bloodline.classFeatures).to.include.keys('blurb', 'alignment', 'hd', 'wealth',
                         'skills', 'classSkills', 'bab', 'goodSaves', 'proficiency', 'table');
                 }))
@@ -477,19 +477,7 @@ describe('tests', function() {
           // determine that status and return data type are correct
           expect(res).to.have.status(200);
           expect(res).to.be.json;
-          expect(res.body).to.be.a("array");
-          // the number known to be in the DB 
-          expect(res.body.length).to.equal(20);
-          // determine that the results have the expected keys
-          res.body.forEach((options => {
-            expect(options).to.be.a('object');
-            if(options.startingStatistics === undefined){
-              expect(options).to.include.keys('id', 'name', 'type', 'description', 
-                'grantedPowers', 'domainSpells', 'subdomains');
-            } else {
-              expect(options).to.include.keys('id', 'name', 'type', 'startingStatistics', 'advancement');
-            }
-          }))
+          expect(res.body).to.be.a('object');
         });
       });
     });
@@ -1262,7 +1250,7 @@ function findFeatPromise(ObjectIdReferanceValues){
   return new Promise((resolve, reject) => {
     Feat.find().limit(2).then(feats => {
       for(let i=0;i<2;i++){
-        ObjectIdReferanceValues.featSlots.push(feats[i]._id);
+        ObjectIdReferanceValues.featSlots.push(feats[i].id);
       }
       resolve();
     }, () => {

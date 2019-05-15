@@ -51,10 +51,7 @@ router.route('/')
 
     Promise.all([Domain.find(), AnimalCompanion.find()]).then(function() {
       // all loaded
-
-      console.log(druidNaturalBondOptions);
       druidNaturalBondOptions = groupBy(druidNaturalBondOptions, "type");      
-      console.log(druidNaturalBondOptions);
 
       res.json(druidNaturalBondOptions);      
     }, function() {
