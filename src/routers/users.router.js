@@ -87,14 +87,15 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
           });                                                         
         }
         // if we did we continue
-        return foundResult;
+        return foundResult.comparePassword(req.body.password);
     })
-    .then((foundUser) => {
-      console.log(foundUser);
+    //.then((foundUser) => {
+      //console.log(foundUser);
 
     	// okay we found a user, compare the password
-        foundUser.comparePassword(req.body.password)
+        //foundUser.comparePassword(req.body.password)
         .then((comparingResult) => {
+          console.log(comparingResult+" comparing passwords");
         	// if false
             if (!comparingResult) {
               console.log(req.body.password);
@@ -117,8 +118,8 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
                 expiresIn: config.EXPIRATION,
             }); // and return it
             return res.json({ token: token, _id: tokenPayload._id });
-        });
-    })
+        })
+    //})
     .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report)));
 });
 
