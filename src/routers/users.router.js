@@ -81,25 +81,21 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
     .then((foundResult) => {
     	// if we didn't find it
         if (!foundResult) {
-          console.log("bad user name");
-          return res.status(400).json({
-              generalMessage: 'Email or password is incorrect',       
-          });                                                         
+            return res.status(400).json({
+                generalMessage: 'Email or password is incorrect',
+            });                                                         
         }
         // if we did we continue
-        return foundResult.comparePassword(req.body.password);
+        return foundResult;
     })
-    //.then((foundUser) => {
-      //console.log(foundUser);
+    .then((foundUser) => {
+      console.log(foundUser);
 
     	// okay we found a user, compare the password
-        //foundUser.comparePassword(req.body.password)
-        .then((foundUser) => {
-          console.log(foundUser+" comparing passwords");
+        foundUser.comparePassword(req.body.password)
+        .then((comparingResult) => {
         	// if false
-            if (!foundUser) {
-              console.log(req.body.password);
-              console.log("bad password");
+            if (!comparingResult) {
             	// return an error, exiting the chain
                 return res.status(400).json({
                     generalMessage: 'Email or password is incorrect',
@@ -118,8 +114,8 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
                 expiresIn: config.EXPIRATION,
             }); // and return it
             return res.json({ token: token, _id: tokenPayload._id });
-        })
-    //})
+        });
+    })
     .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report)));
 });
 
