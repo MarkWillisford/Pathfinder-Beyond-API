@@ -97,6 +97,7 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
         .then((comparingResult) => {
         	// if false
             if (!comparingResult) {
+              console.log(req.body.password);
               console.log("bad password");
             	// return an error, exiting the chain
                 return res.status(400).json({
