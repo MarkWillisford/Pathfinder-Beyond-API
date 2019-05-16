@@ -94,10 +94,10 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
 
     	// okay we found a user, compare the password
         //foundUser.comparePassword(req.body.password)
-        .then((comparingResult) => {
-          console.log(comparingResult+" comparing passwords");
+        .then((foundUser) => {
+          console.log(foundUser+" comparing passwords");
         	// if false
-            if (!comparingResult) {
+            if (!foundUser) {
               console.log(req.body.password);
               console.log("bad password");
             	// return an error, exiting the chain
