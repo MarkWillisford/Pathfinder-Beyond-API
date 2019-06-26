@@ -14,6 +14,7 @@ router.route('/')
       .find()
       .then(feats => {
         res.json(feats.map(feat => {
+          console.log(feat);
           return {
             id: feat._id,
             name: feat.name,
@@ -27,6 +28,7 @@ router.route('/')
             repeatable: feat.repeatable,
             selections: feat.selections,
             source: feat.source,
+            prerequisites: feat.prerequisites,
           };
         }));
       })

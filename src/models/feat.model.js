@@ -36,7 +36,19 @@ const FeatSchema = mongoose.Schema({
 	},
 	selections:[{
 		type: String,
-	}],
+  }],
+  prerequisites:[{
+    type:{
+      type: String,
+      required: true,
+    },
+    data:{
+      stat:{
+        type:String,
+      },
+      value:{},
+    }
+  }],
 	source: {
 		type: String,
 		required: true,
