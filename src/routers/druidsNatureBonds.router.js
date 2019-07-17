@@ -13,20 +13,22 @@ const AnimalCompanion = require('../models/animalCompanion.model');
 router.route('/')
   .get(passport.authenticate('jwt', { session: false }), (req, res) => {
     let druidNaturalBondOptions = [];
-    console.log("in router");
 
     Domain.find().then((domains) => {
       // loaded
       domains.map(domain => {
-        druidNaturalBondOptions.push({
-          id: domain._id,
-          type: domain.type,
-          name: domain.name,
-          description: domain.description,
-          grantedPowers: domain.grantedPowers,
-          domainSpells: domain.domainSpells,
-          subdomains: domain.subdomains,
-        });
+        if(domain.druidAvailable === true){
+          druidNaturalBondOptions.push({
+            id: domain._id,
+            type: domain.type,
+            druidAvailable: domain.druidAvailable,
+            name: domain.name,
+            description: domain.description,
+            grantedPowers: domain.grantedPowers,
+            domainSpells: domain.domainSpells,
+            subdomains: domain.subdomains,
+          });
+        }
       })
     }, () => {
       // failed

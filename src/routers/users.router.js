@@ -195,6 +195,10 @@ router.route('/characters')
         userID: user._id,
       };
       Character.find(filters)
+      .populate("charClass")
+      .populate("featSlots")
+      .populate("traitSlots")
+      .populate("race")
       .then(characters => res.json(characters))
       .catch(err => {
         console.error(err);
@@ -206,30 +210,36 @@ router.route('/characters')
       return res.status(400).send(message);
     }
   })
-  
-  
-/*   Character.find().then(characters => {
-    res.json(characters.map(character => {
-      return {
-        id: character._id,
-        characterStats: character.characterStats,
-        charClass: character.charClass,
-        featSlots: character.featSlots,
-        traitSlots: character.traitSlots,
-        preferences: character.preferences,
-        race: character.race,
-        details: character.details,
-        goldMethod: character.goldMethod,
-        gold: character.gold,
-        availableGold: character.availableGold,
-        gear: character.gear,
-        abilityScoreGenerationMethod: character.abilityScoreGenerationMethod,
-      };
-    }));
-  }) */
-  .catch(err => {
-      console.error(err);
-      res.status(500).json({ message: "Internal server error" });
+  /*   Character.find().then(characters => {
+      res.json(characters.map(character => {
+        return {
+          id: character._id,
+          characterStats: character.characterStats,
+          charClass: character.charClass,
+          featSlots: character.featSlots,
+          traitSlots: character.traitSlots,
+          preferences: character.preferences,
+          race: character.race,
+          details: character.details,
+          goldMethod: character.goldMethod,
+          gold: character.gold,
+          availableGold: character.availableGold,
+          gear: character.gear,
+          abilityScoreGenerationMethod: character.abilityScoreGenerationMethod,
+        };
+      }));
+    }) */
+    .catch(err => {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error" });
+    })
   })
-});
+  // passport.authenticate('jwt', { session: false }), 
+  .delete(requiredFields('_id'), (req, res) => {
+    Character.findByIdAndDelete(req.body._id, function (err) {
+      if(err) console.log(err);
+      console.log("Successful deletion");
+    });
+    res.status(204).end();
+  })
 module.exports = { router }; 

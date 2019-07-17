@@ -118,7 +118,6 @@ const CharacterSchema = new mongoose.Schema({
     },
     gender: {
       type: String,
-      required: true,
     },
     hair: {
       type: String,

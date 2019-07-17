@@ -17,6 +17,7 @@ router.route('/')
                     return {
                         id: domain._id,
                         type: domain.type,
+                        druidAvailable: domain.druidAvailable,
                         name: domain.name,
                         description: domain.description,
                         grantedPowers: domain.grantedPowers,
