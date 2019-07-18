@@ -74,7 +74,10 @@ const CharacterSchema = new mongoose.Schema({
     }
   }],
   charClass:{ type: mongoose.Schema.Types.ObjectId, ref: 'CharClass' },
-  featSlots:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Feat' }],
+  selections:{},
+  featSlots:[
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Feat' }
+  ],
   traitSlots:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Trait' }],
   preferences:{
     name:{

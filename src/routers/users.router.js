@@ -144,6 +144,7 @@ router.route('/characters')
           userID:req.body.user_id,
           characterStats: req.body.characterStats,
           charClass: req.body.charClass,
+          selections: req.body.selections,
           featSlots: req.body.featSlots,
           traitSlots: req.body.traitSlots,
           preferences: req.body.preferences,
@@ -155,10 +156,14 @@ router.route('/characters')
           gear: req.body.gear,
           abilityScoreGenerationMethod: req.body.abilityScoreGenerationMethod,
         })
+        .then(character => {
+          console.log(character);
+        })
         .then(character => res.status(201).json({
           id: character._id,
           characterStats: character.characterStats,
           charClass: character.charClass,
+          selections:character.selections,
           featSlots: character.featSlots,
           traitSlots: character.traitSlots,
           preferences: character.preferences,
@@ -242,4 +247,45 @@ router.route('/characters')
     });
     res.status(204).end();
   })
+
+  .put(passport.authenticate('jwt', { session: false }), requiredFields('id', 'user_id', 'characterStats', 
+  'charClass', 'featSlots', 'traitSlots', 'preferences', 'race', 'details', 'goldMethod', 'gold',
+  'availableGold', 'gear', 'abilityScoreGenerationMethod'),(req, res) => {
+    // assuming it passes all tests, we find a user from the req data
+    User.findById(req.body.user_id)
+    .then(user => {
+      if(user){
+        Character.updateOne({_id:req.body.id,}, {
+          userID:req.body.user_id,
+          characterStats: req.body.characterStats,
+          charClass: req.body.charClass,
+          selections: req.body.selections,
+          featSlots: req.body.featSlots,
+          traitSlots: req.body.traitSlots,
+          preferences: req.body.preferences,
+          race: req.body.race,
+          details: req.body.details,
+          goldMethod: req.body.goldMethod,
+          gold: req.body.gold,
+          availableGold: req.body.availableGold,
+          gear: req.body.gear,
+          abilityScoreGenerationMethod: req.body.abilityScoreGenerationMethod,
+        })
+        .then(
+          res.status(204)
+        )
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ message: "Internal server error" });
+        });
+      } else {
+        const message = `User not found`;
+        console.error(message);
+        return res.status(400).send(message);
+      }
+    })    
+    // if there are errors we catch them and send a 400 code and generate an error
+    .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report)));
+  })
+
 module.exports = { router }; 
