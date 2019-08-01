@@ -8,6 +8,8 @@ const config = require('../config/main.config');
 const errorsParser = require('../helpers/errorParser.helper');
 const disableWithToken = require('../middlewares/disableWithToken.middleware').disableWithToken;
 const requiredFields = require('../middlewares/requiredFields.middleware');
+const pdf = require('html-pdf');
+const characterSheetTemplate = require('../helpers/characterSheetpdf');
 
 const router = express.Router();
 
@@ -286,6 +288,36 @@ router.route('/characters')
     })    
     // if there are errors we catch them and send a 400 code and generate an error
     .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report)));
-  })
+  });
+  
+  let options = { 
+    // Papersize Options:
+    format: 'Letter',
+    
+    // Page options:
+    "border": {
+      //"top": ".5in",            // default is 0, units: mm, cm, in, px
+      "right": ".5in",
+      "bottom": ".5in",
+      "left": ".5in"
+    },
+  };
+  router.route('/pdf')
+  // POST - PDF generation and fetching data
+    .post(passport.authenticate('jwt', { session: false }), (req, res) => {
+      pdf.create(characterSheetTemplate(req.body), options).toFile('./src/routers/result.pdf', (err) => {
+        if(err){
+          console.log("rejecting");
+          return Promise.reject();
+        }
 
+        return res.status(200).send();
+      });
+
+    })
+
+  // GET - Send the generated PDF to the client
+  .get(passport.authenticate('jwt', { session: false }), (req, res) => {
+    return res.sendFile(`/result.pdf`, {root: __dirname});
+  })
 module.exports = { router }; 
