@@ -2,6 +2,8 @@
   font-family: 'Helvetica Neue', 'Helvetica';
 }
 .playerCharacterInformation{
+  background-color: yellow;
+  position: relative;
 }
 .playerCharacterInformationData{
   border-bottom: 1px solid black;
@@ -52,17 +54,26 @@
   width: 2.96in /* 2.5in */;
 }
 
+.bottom_aligner {
+  display: inline-block;
+  height: 100%;
+  vertical-align: bottom;
+  width: 0px;
+}
 .abilityScoresDiv{
   height: 1.629in/* 1.375in */;
   width: 3.034in; 
   border-top: 2px solid black;
   margin-top: .148in /* .125in */;
-  float: left;
+  /* float: left; */
+  position: absolute;
 }
   .abilityDivLabelRow{
     height: .20in;
     margin-right: .074in;
-    width: 2.96in; /* 2.96 - .12 (4*.03) = 2.84 / 8 = .355 */ 
+    width: 2.96in; /* 2.96 - .12 (4*.03) = 2.84 / 8 = .355 */
+    text-align: center;
+    font-size: 5px;
   }
   .abilityDivRow{
     height: .215in /* .1875in */;
@@ -97,32 +108,47 @@
   .darkLabel{
     background-color: black;
     color: white;
-    font-size: 12px;
+    text-align: center;
   }
-  .dataSquare{    
+  .darkLabel>.dlAbr{
+    height: .148in /* .125in */;
+    font-weight: bold;
+    font-size: 12px
+  }
+  .darkLabel>.dlLabel{
+    height: .074in /* .0625in */;
+    font-size: 5px    
+  }
+  .dataSquare{
     outline: 1px solid black;
     outline-offset: -1px;
   }
 .classRecorderHitPointsDiv{
   height: 1.5in;
   width: 5.966in; 
-  float: left;
+  /* float: left; */
   margin-top: .148in /* .125in */;
   border: 1px solid black;
+  position: absolute;
+  left: 3.11in; 
 }
   .classRecorderHitPointsDivLabel{
     height: .15in;
     width: 100%;
   }
     .hitPointLabel{
+      height: .15in;
       width: 33.3%/* 1.9506in */;
       text-align: center;
       float: left;
+      font-size: 12px;
     }
     .classRecorderLabel{
+      height: .15in;
       width: 66.7%/* 4.0154in */;
       text-align: center;
       float: left;
+      font-size: 12px;
     }
   .hitPointsDiv{
     height: 1.35in;
@@ -144,6 +170,13 @@
         font-size: 14px;
         line-height: .21267in;
         padding-right: .074in;
+        float: right;
+      }
+      .favoredClass{
+        font-size: 6px;
+        line-height: .21267in;
+        padding-left: .074in;
+        float: left;
       }
     .hitPointsDivRight{
       height: 100%;
@@ -168,9 +201,168 @@
   .classRecorderHitPointsRow{
     height: .21267in;
   }
+  .classRecorderCol{
+    height: .21267in;
+    width: .30in;
+    float: left;
+  }
+  .classRecorderWideCol{
+    height: .21267in;
+    width: 1.879322in;
+    float: left;
+  }
+  .classRecorderTopCol{
+    height: .28667in;
+    width: .30in;
+    font-size: 5px;
+    text-align: center;    
+    float: left;
+  }
+  .classRecorderTopWideCol{
+    height: .28667in;
+    width: 1.879322in;
+    font-size: 5px;
+    text-align: center;    
+    float: left;
+  }
+  .classRecorderTotalsCol{
+    height: .21267in;
+    width: 2.179322in;
+    float: left;
+  }
 /* 1/4 = .25
 1/8 = .125
 1/16 = .0625 */
+/**************************/
+/*  Attacks and Defenses   *
+/**************************/
+
+.attacksAndDefenseDiv{
+  /* background-color: blue; */
+  height: 3.7in;
+  width: 6in;
+  position: absolute;
+  top: 3in;
+}
+.contentTitle{
+  height: .15in;
+  width: 100%;
+  font-size: 12px;
+}
+.attacksAndDefenseDivLabelRow{
+  height: .15in;
+  margin-right: .074in;
+  width: 100%;
+  text-align: center;
+  font-size: 5px;
+}
+.attacksAndDefenseDivRow{
+  height: .215in;
+  margin-bottom: .03in;
+  margin-right: .074in;
+}
+.plusTen{
+  font-size: 16px;
+  text-align: center;
+  line-height: .215in;
+}
+.acSpacer{
+  height: .215in;
+  width: .6in;
+  margin-bottom: .03in;
+  margin-right: .025in;
+  float: left;
+}
+.acSpacer>.label{
+  height: .1075in;
+  text-align: right;
+  font-size: 5px;
+}
+.savesDiv, .attacksDiv{
+  width: 3.42in;
+}
+.statNameTotal{
+  height: 100%;
+  width: 1.065in;
+  float: left;
+}
+.attacksAndDefenseName{
+  height: 100%;
+  width: .71in;
+  float: left;
+}
+.attacksAndDefenseTotal{
+  height: 100%;
+  width: .355in;
+  float: left;
+}
+.attacksAndDefenseWide{
+  height: 100%;
+  width: 1.095in;
+  margin-left: .03in;
+  float: left;
+}
+.combatNotesDiv{
+  height: 2.46in;
+  width: 2.5in;
+  position: absolute;
+  top: 1.05in;
+  left: 3.45in;
+}
+.verticalSpacer{
+  height: .375in;
+  width: 100%;
+}
+.linedRow{
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  height: .215in;
+  width: 100%;
+  border-bottom: 1px solid black;
+}
+.topLinedRow{
+  border-top: 1px solid black;
+}
+
+/**************************/
+/*   FEATS AND FEATURES    *
+/**************************/
+.featsAndFeaturesDiv{
+  /* background-color: red; */
+  height: 3.7in;
+  width: 6in;
+  position: absolute;
+  top: 6.7in;
+}
+.featsAndFeaturesLabelRow{
+  height: .08in;
+  width: 100%;
+  text-align: center;
+  font-size: 5px;/* 
+  outline: 1px solid black;
+  outline-offset: -1px; */
+}
+.featsAndFeaturesDivLeft, .featsAndFeaturesDivRight{
+  height: 3.45in;
+  width: 2.97in;
+  float: left;
+}
+.featsAndFeaturesDivLeft{
+  margin-right: .06in;
+}
+.featsAndFeaturesDivRight{
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
