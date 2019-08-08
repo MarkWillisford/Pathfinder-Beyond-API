@@ -2,7 +2,6 @@
   font-family: 'Helvetica Neue', 'Helvetica';
 }
 .playerCharacterInformation{
-  background-color: yellow;
   position: relative;
 }
 .playerCharacterInformationData{
@@ -354,74 +353,220 @@
 .featsAndFeaturesDivRight{
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-.margin-top {
-margin-top: 50px;
+/**************************/
+/*         SKILLS          *
+/**************************/
+.skillsDiv{
+  height: 5.25in;
+  width: 3in;
+  position: absolute;
+  top: 2.75in;
+  left: 6.1in;
 }
-.justify-center {
-text-align: center;
+.skillsTable{  
+  border-collapse: collapse;
 }
-.invoice-box table {
-width: 100%;
-line-height: inherit;
-text-align: left;
-}
-.invoice-box table td {
-padding: 5px;
-vertical-align: top;
-}
-.invoice-box table tr td:nth-child(2) {
-text-align: right;
-}
-.invoice-box table tr.top table td {
-padding-bottom: 20px;
-}
-.invoice-box table tr.top table td.title {
-font-size: 45px;
-line-height: 45px;
-color: #333;
-}
-.invoice-box table tr.information table td {
-padding-bottom: 40px;
-}
-.invoice-box table tr.heading td {
-background: #eee;
-border-bottom: 1px solid #ddd;
-font-weight: bold;
-}
-.invoice-box table tr.details td {
-padding-bottom: 20px;
-}
-.invoice-box table tr.item td {
-border-bottom: 1px solid #eee;
-}
-.invoice-box table tr.item.last td {
-border-bottom: none;
-}
-.invoice-box table tr.total td:nth-child(2) {
-border-top: 2px solid #eee;
-font-weight: bold;
-}
-@media only screen and (max-width: 600px) {
-  .invoice-box table tr.top table td {
+.skillsRow{
+  height: .165in;
   width: 100%;
-  display: block;
-  text-align: center;
-  }
-  .invoice-box table tr.information table td {
+}
+.gray{
+  background-color: lightgrey;
+}
+.skillsName{
+  width: 1.15in; 
+  font-size: 8px;
+}
+.skillsNameCbx{
+  /* Smaller-sized Checkboxes */
+  -ms-transform: scale(.75); /* IE */
+  -moz-transform: scale(.75); /* FF */
+  -webkit-transform: scale(.75); /* Safari and Chrome */
+  -o-transform: scale(.75); /* Opera */
+  transform: scale(.75);
+  margin: 0;
+  padding: 0;
+}
+.skillsNameCbx{
+  height: 9.6px;
+  width: 9.6px;
+  border: 1px solid black;
+}
+.skillsAbilityName{
+  width: .125in;
+  font-size: 8px;
+  text-align: right;
+}
+.skillsBox{
+  width: .23in;
+  outline: 1px solid black;
+  outline-offset: -1px;
+}
+.skillsBoxLabel{
+  width: .23in;
+}
+.skillsDetailsRows{
+  height: .16;
   width: 100%;
-  display: block;
+  text-align: center;  
+  font-size: 5px;
+  vertical-align: middle;
+}
+
+/**************************/
+/*         EXTRAS          *
+/**************************/
+.experienceAndExtrasDiv{
+  height: 1.87in;
+  width: 3in;
+  position: absolute;
+  top: 8.55in;
+  left: 6.1in;
+}
+.experienceAndExtrasRow{
+  height: .202in;
+  width: 100%;
+  margin-bottom: .03in;
+  margin-right: .074in;
+}
+.resistanceLabel{
+  height: .08;
+  width: 100%;
+  font-size: 5px;
+  padding-top:3px;
+  padding-left:3px; 
+}
+.extrasNameTotal{
+  height: 100%;
+  width: 1.4in; 
+  float: left;
+}
+.extrasName{
+  height: 100%;
+  width: 1in; 
+  float: left;
+}
+.extrasTotal{
+  height: 100%;
+  width: .4in; 
+  float: left;
+}
+.extrasTotalLong{
+  height: 100%;
+  width: 2in; 
+  float: left;
+}
+.experienceAndExtrasData{
+  height: 100%;
+  width: 1.565in;
+  margin-left: .03in;
+  float: left;
   text-align: center;
-  }
+}
+.heavyDataSquare{
+  outline: 2px solid black;
+  outline-offset: -2px;
+}
+.extrasData{
+  height: 100%;
+  width: .313in;
+  float: left;
+}
+.experienceDiv{
+  height: .128in;
+  width: 100%;
+  font-size: 7px;
+  text-align: center;
+}
+.xpSpeedLabel{
+  height: 100%;
+  width: 33%;
+  float: left;
+}
+
+
+.proficienciesDiv{
+  height: .5in;
+  width: 3in;
+  position: absolute;
+  top: 10.45in;
+  left: 6.1in;
+}
+.proficienciesDivLabel{
+  height: .08;
+  width: 100%;
+  text-align: center;
+  font-size: 7px;
+}
+.proficienciesRowWrap{
+  height: .42in;
+  width: 100%;
+  outline: 2px solid black;
+  outline-offset: -2px;
+}
+.proficienciesRow{
+  height: .21in;
+  width: 100%;
+}
+
+
+.armorDiv{
+  height: .5in;
+  width: 6in;
+  position: absolute;
+  top: 10.45in;
+}
+.armorName{
+  height: 100%;
+  width: 3.03in;
+  float: left;
+}
+.armorData{
+  height: 100%;
+  width: .37125in;
+  float: left;
+}
+.armorRowWrap{
+  height: .42in;
+  width: 100%;
+  outline: 2px solid black;
+  outline-offset: -2px;
+}
+.armorRow{
+  height: .21in;
+  width: 100%;
+}
+
+
+.weaponsDiv{
+  height: 1.13in;
+  width: 9in;
+  position: absolute;
+  top: 11.05in;
+}
+.weaponsLong, .damage{
+  float: left;
+}
+.weaponsLong{
+  height: 100%;
+  width: 1.45in;
+}
+.weaponsAttacks{
+  height: 100%;
+  width: .29in;
+  float: left;
+}
+.damage{
+  height: 100%;
+  width: 1.21in;
+}
+.weaponsWrap{
+  height: 1.05in;
+  width: 100%;
+  outline: 2px solid black;
+  outline-offset: -2px;
+}
+.weaponsRow{
+  height: .21in;
+  width: 100%;
 }

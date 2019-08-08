@@ -206,6 +206,10 @@ router.route('/characters')
       .populate("featSlots")
       .populate("traitSlots")
       .populate("race")
+      .populate("gear.armor")
+      .populate("gear.weapon")
+      .populate("gear.tradeGoods")
+      .populate("gear.goodsAndServices")
       .then(characters => res.json(characters))
       .catch(err => {
         console.error(err);
