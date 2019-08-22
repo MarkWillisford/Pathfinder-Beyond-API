@@ -45,6 +45,7 @@ app.use(function (req, res, next) {
   }
   next();
 });
+app.use(cors());
 
 // Body Parser
 app.use(bodyParser.urlencoded({ extended: false }));
