@@ -41,13 +41,13 @@ app.use(function (req, res, next) {
   /* res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization'); */
   // BUG #4 CORS ERROR
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
 
 
   
-  if (req.method === 'OPTIONS') {
+  /* if (req.method === 'OPTIONS') {
     return res.send(204);
-  }
+  } */
   next();
 });
 //app.use(cors());
