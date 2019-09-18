@@ -88,13 +88,15 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
             });                                                         
         }
         // if we did we continue
+        console.log("BUG #11");
+        console.log("found user");
+        console.log(foundResult);
         return foundResult;
     })
     .then((foundUser) => {
-      console.log(foundUser);
 
     	// okay we found a user, compare the password
-        foundUser.comparePassword(req.body.password)
+        foundUser.comparePassword(req.body.password) // Error here 
         .then((comparingResult) => {
         	// if false
             if (!comparingResult) {
@@ -159,7 +161,7 @@ router.route('/characters')
           abilityScoreGenerationMethod: req.body.abilityScoreGenerationMethod,
         })
         .then(character => {
-          console.log(character);
+          //console.log(character);
         })
         .then(character => res.status(201).json({
           id: character._id,
@@ -249,7 +251,7 @@ router.route('/characters')
   .delete(requiredFields('_id'), (req, res) => {
     Character.findByIdAndDelete(req.body._id, function (err) {
       if(err) console.log(err);
-      console.log("Successful deletion");
+      //console.log("Successful deletion");
     });
     res.status(204).end();
   })
