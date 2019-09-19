@@ -126,7 +126,7 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
 router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, res) => {
   console.log("logging in with google");
   // Decode the token
-  const decoded = jwt.decode(id_token);
+  const decoded = jwt.decode(req.body.id_token);
   console.log(decoded);
     /* User.findOne({ email: req.body.email })
     .then((foundResult) => {
