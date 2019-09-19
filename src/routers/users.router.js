@@ -138,6 +138,7 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
     .then((foundResult) => {
     	// if we didn't find it
         if (!foundResult) {
+          console.log("no user found");
             return res.status(400).json({
                 generalMessage: 'Email or password is incorrect',
             });                                                         
