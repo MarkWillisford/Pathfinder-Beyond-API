@@ -128,7 +128,13 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
   // Decode the token
   const decoded = jwt.decode(req.body.id_token);
   console.log(decoded);
-    /* User.findOne({ email: req.body.email })
+
+  // I now need to attempt to find the user
+
+  // If there is no user create one
+
+  
+  User.findOne({ email: decoded.email })
     .then((foundResult) => {
     	// if we didn't find it
         if (!foundResult) {
@@ -169,7 +175,7 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
             return res.json({ token: token, _id: tokenPayload._id });
         });
     })
-    .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report))); */
+    .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report)));
 });
 
 
