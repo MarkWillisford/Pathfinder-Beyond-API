@@ -149,31 +149,19 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
         return foundResult;
     })
     .then((foundUser) => {
-
-    	// okay we found a user, compare the password
-        foundUser.comparePassword(req.body.password) // Error here 
-        .then((comparingResult) => {
-        	// if false
-            if (!comparingResult) {
-            	// return an error, exiting the chain
-                return res.status(400).json({
-                    generalMessage: 'Email or password is incorrect',
-                });
-            }
-            // if we got here, create a token payload (user)
-            const tokenPayload = {
-                _id: foundUser._id,
-                email: foundUser.email,
-                username: foundUser.username,
-                role: foundUser.role,
-                firstName:foundUser.firstName,
-                lastName: foundUser.lastName,
-            }; // send it off in a token
-            const token = jwt.sign(tokenPayload, config.SECRET, {
-                expiresIn: config.EXPIRATION,
-            }); // and return it
-            return res.json({ token: token, _id: tokenPayload._id });
-        });
+      // create a token payload (user)
+      const tokenPayload = {
+          _id: foundUser._id,
+          email: foundUser.email,
+          username: foundUser.username,
+          role: foundUser.role,
+          firstName:foundUser.firstName,
+          lastName: foundUser.lastName,
+      }; // send it off in a token
+      const token = jwt.sign(tokenPayload, config.SECRET, {
+          expiresIn: config.EXPIRATION,
+      }); // and return it
+      return res.json({ token: token, _id: tokenPayload._id });
     })
     .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report)));
 });
