@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
 	},
 	password: {
 		type: String,
-		required: true,
+		required: false,
 		min: 7,
 		max: 72, // due to bcrypt truncating
 	},

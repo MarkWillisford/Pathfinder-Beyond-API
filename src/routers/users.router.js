@@ -129,27 +129,42 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
   const decoded = jwt.decode(req.body.id_token);
   console.log(decoded);
 
-  // I now need to attempt to find the user
-
-  // If there is no user create one
-
-  
+  // I now need to attempt to find the user  
   User.findOne({ email: decoded.email })
     .then((foundResult) => {
-    	// if we didn't find it
-        if (!foundResult) {
-          console.log("no user found");
-            return res.status(400).json({
-                generalMessage: 'Email or password is incorrect',
-            });                                                         
-        }
-        // if we did we continue
-        console.log("BUG #11");
-        console.log("found user");
-        console.log(foundResult);
-        return foundResult;
-    })
-    .then((foundUser) => {
+    	// if we didn't find it, we need to create a user
+      if (!foundResult) {
+        console.log("no user found");
+        /* return res.status(400).json({
+            generalMessage: 'Email or password is incorrect',
+        }); */
+        User.create({
+          email: decoded.email,
+          firstName: decoded.given_name,
+          lastName: decoded.family_name,
+          username: decoded.name,
+        })
+        // assuming no errors we return a 201 created code
+        .then(user => {
+          // if we got here, create a token payload (user)
+          const tokenPayload = {
+              _id: user._id,
+              email: user.email,
+              username: user.username,
+              role: user.role,
+          }; // send it off in a token
+          const token = jwt.sign(tokenPayload, config.SECRET, {
+              expiresIn: config.EXPIRATION,
+          }); // and return it
+          return res.status(201).json({ token: token, _id: tokenPayload._id });
+        })
+        // if there are errors we catch them and send a 400 code and generate an error
+        .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report)));
+      }
+      // if we did find a user, we log them in
+      console.log("BUG #11");
+      console.log("found user");
+      console.log(foundResult);
       // create a token payload (user)
       const tokenPayload = {
           _id: foundUser._id,
