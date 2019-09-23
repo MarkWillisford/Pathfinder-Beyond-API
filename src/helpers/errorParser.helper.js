@@ -2,7 +2,6 @@ const parseErrors = errors => Object.keys(errors).map(item => errors[item].messa
 
 module.exports = {
     generateErrorResponse: (report) => {
-        console.log(report);
         if (report.errors && report._message) {
             return {
                 generalMessage: report._message,

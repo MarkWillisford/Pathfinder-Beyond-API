@@ -164,7 +164,9 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
         .catch(report => {
           console.log("Ln 165");
           console.log(report);
-          res.status(400).json(errorsParser.generateErrorResponse(report))});
+          res.status(400).json({
+            generalMessage:"Please create an account.",
+        })});
       } else {
         // if we did find a user, we log them in
         console.log("Ln 170"); 
