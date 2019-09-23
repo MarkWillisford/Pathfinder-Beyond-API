@@ -160,8 +160,7 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
         })
         // if there are errors we catch them and send a 400 code and generate an error
         .catch(report => {
-          console.log(report.errors);
-          console.log(report._message);
+          console.log(report);
           res.status(400).json(errorsParser.generateErrorResponse(report))});
       }
       // if we did find a user, we log them in
