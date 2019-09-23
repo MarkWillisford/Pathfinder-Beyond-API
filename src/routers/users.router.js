@@ -132,7 +132,7 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
   // I now need to attempt to find the user  
   User.findOne({ email: decoded.email })
     .then((foundResult) => {
-    	// if we didn't find it, we need to create a user
+    	// if we didn't find it, we need to retrun an error to let the user know that they must create an account first.
       if (!foundResult) {
         console.log("no user found");
         /* return res.status(400).json({
@@ -159,7 +159,10 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
           return res.status(201).json({ token: token, _id: tokenPayload._id });
         })
         // if there are errors we catch them and send a 400 code and generate an error
-        .catch(report => res.status(400).json(errorsParser.generateErrorResponse(report)));
+        .catch(report => {
+          console.log(report.errors);
+          console.log(report._message);
+          res.status(400).json(errorsParser.generateErrorResponse(report))});
       }
       // if we did find a user, we log them in
       console.log("BUG #11");
