@@ -175,12 +175,12 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
         console.log(foundResult);
         // create a token payload (user)
         const tokenPayload = {
-            _id: foundUser._id,
-            email: foundUser.email,
-            username: foundUser.username,
-            role: foundUser.role,
-            firstName:foundUser.firstName,
-            lastName: foundUser.lastName,
+            _id: foundResult._id, // <------------!
+            email: foundResult.email,
+            username: foundResult.username,
+            role: foundResult.role,
+            firstName:foundResult.firstName,
+            lastName: foundResult.lastName,
         }; // send it off in a token
         const token = jwt.sign(tokenPayload, config.SECRET, {
             expiresIn: config.EXPIRATION,
