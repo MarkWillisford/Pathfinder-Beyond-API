@@ -10,6 +10,7 @@ Dashboard:
 ![Alt text](/screenshots/desktop_TTRPGCharGen_Compressed.png "Dashboard")
 
 Mobile Login:
+
 ![Alt text](/screenshots/mobile_TTRPGCharGen_Compressed.png "Dashboard")
 
 One of a myriad of selection screens:
