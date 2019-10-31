@@ -8,8 +8,10 @@ App repository is [HERE](https://github.com/MarkWillisford/Pathfinder-Beyond-Cli
 **Screenshots**
 Dashboard:
 ![Alt text](/screenshots/desktop_TTRPGCharGen_Compressed.png "Dashboard")
+
 Mobile Login:
 ![Alt text](/screenshots/mobile_TTRPGCharGen_Compressed.png "Dashboard")
+
 One of a myriad of selection screens:
 ![Alt text](/screenshots/TTRPG_Screenshot_2.png "Race Selection")
 
