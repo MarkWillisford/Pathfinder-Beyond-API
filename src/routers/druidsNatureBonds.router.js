@@ -32,7 +32,6 @@ router.route('/')
       })
     }, () => {
       // failed
-      console.log("Domains failed");
     });
 
     AnimalCompanion.find().then((animalCompanions) => {
@@ -48,7 +47,6 @@ router.route('/')
       })
     }, () => {
       // failed
-      console.log("AnimalCompanions failed");
     });
 
     Promise.all([Domain.find(), AnimalCompanion.find()]).then(function() {
@@ -58,7 +56,6 @@ router.route('/')
       res.json(druidNaturalBondOptions);      
     }, function() {
       // one or more failed
-      console.log("something failed"); 
     });
   });  
 

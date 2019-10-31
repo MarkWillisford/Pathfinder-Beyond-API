@@ -1241,7 +1241,6 @@ function findCharClassPromise(ObjectIdReferanceValues){
       resolve();
     }, () => {
       // failed
-      console.log("CharClass failed");
       reject();
     })
   })
@@ -1255,7 +1254,6 @@ function findFeatPromise(ObjectIdReferanceValues){
       resolve();
     }, () => {
       // failed
-      console.log("FeatSlots failed");
       reject();
     })
   })
@@ -1269,7 +1267,6 @@ function findTraitPromise(ObjectIdReferanceValues){
       resolve();
     }, () => {
       // failed
-      console.log("TraitSlots failed");
       reject();
     })
   })
@@ -1283,7 +1280,6 @@ function findRacePromise(ObjectIdReferanceValues){
       resolve();
     }, () => {
       // failed
-      console.log("TraitSlots failed");
       reject();
     })
   })
@@ -1297,7 +1293,6 @@ function findArmorPromise(ObjectIdReferanceValues){
       resolve();
     }, () => {
       // failed
-      console.log("Armor failed");
       reject();
     })
   })
@@ -1311,7 +1306,6 @@ function findWeaponPromise(ObjectIdReferanceValues){
       resolve();
     }, () => {
       // failed
-      console.log("Weapon failed");
       reject();
     })
   })
@@ -1325,7 +1319,6 @@ function findTradeGoodsPromise(ObjectIdReferanceValues){
       resolve();
     }, () => {
       // failed
-      console.log("TradeGoods failed");
       reject();
     })
   })
@@ -1339,7 +1332,6 @@ function findGoodsAndServicePromise(ObjectIdReferanceValues){
       resolve();
     }, () => {
       // failed
-      console.log("GoodsAndService failed");
       reject();
     })
   })
@@ -1351,7 +1343,6 @@ function findUserIDPromise(ObjectIdReferanceValues){
       resolve();
     }, () => {
       // failed
-      console.log("Users failed");
       reject();
     })
   })  

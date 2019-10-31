@@ -77,7 +77,6 @@ router.route('/')
 // To access the login page, we run through the disableWithToken
 // and the requiredFields
 router.post('/login', disableWithToken, requiredFields('email', 'password'), (req, res) => {
-  console.log("logging in");
   // Assuming you have both we look for a user with that email
     User.findOne({ email: req.body.email })
     .then((foundResult) => {
@@ -88,9 +87,6 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
             });                                                         
         }
         // if we did we continue
-        console.log("BUG #11");
-        console.log("found user");
-        console.log(foundResult);
         return foundResult;
     })
     .then((foundUser) => {
@@ -124,19 +120,14 @@ router.post('/login', disableWithToken, requiredFields('email', 'password'), (re
 });
 
 router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, res) => {
-  console.log("logging in with google");
   // Decode the token
   const decoded = jwt.decode(req.body.id_token);
-  console.log("Ln 130");
-  console.log(decoded);
 
   // I now need to attempt to find the user  
   User.findOne({ email: decoded.email })
     .then((foundResult) => {
     	// if we didn't find it, we need to retrun an error to let the user know that they must create an account first.
       if (!foundResult) {
-        console.log("Ln 138");
-        console.log("no user found");
         /* return res.status(400).json({
             generalMessage: 'Email or password is incorrect',
         }); */
@@ -162,17 +153,11 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
         })
         // if there are errors we catch them and send a 400 code and generate an error
         .catch(report => {
-          console.log("Ln 165");
-          console.log(report);
           res.status(400).json({
             generalMessage:"Please create an account.",
         })});
       } else {
         // if we did find a user, we log them in
-        console.log("Ln 170"); 
-        console.log("BUG #11");
-        console.log("found user");
-        console.log(foundResult);
         // create a token payload (user)
         const tokenPayload = {
             _id: foundResult._id, // <------------!
@@ -189,8 +174,6 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
       }
     })
     .catch(report => {
-      console.log("ln 190");
-      console.log(report);
       res.status(400).json(errorsParser.generateErrorResponse(report))});
 });
 
@@ -198,10 +181,7 @@ router.post('/googleLogin', disableWithToken, requiredFields('id_token'), (req, 
 const jwtAuth = passport.authenticate('jwt', {session: false});
 // The user exchanges a valid JWT for a new one with a later expiration
 router.post('/refresh', jwtAuth, (req, res) => {
-  console.log("refreshing token");
   const authToken = createAuthToken(req.user);
-  console.log(`sending back `);
-  console.log(authToken);
   res.json(authToken);
 });
 
@@ -233,7 +213,6 @@ router.route('/characters')
           abilityScoreGenerationMethod: req.body.abilityScoreGenerationMethod,
         })
         .then(character => {
-          //console.log(character);
         })
         .then(character => res.status(201).json({
           id: character._id,
@@ -322,8 +301,7 @@ router.route('/characters')
   // passport.authenticate('jwt', { session: false }), 
   .delete(requiredFields('_id'), (req, res) => {
     Character.findByIdAndDelete(req.body._id, function (err) {
-      if(err) console.log(err);
-      //console.log("Successful deletion");
+
     });
     res.status(204).end();
   })
@@ -385,7 +363,6 @@ router.route('/characters')
     .post(passport.authenticate('jwt', { session: false }), (req, res) => {
       pdf.create(characterSheetTemplate(req.body), options).toFile('./src/routers/result.pdf', (err) => {
         if(err){
-          console.log("rejecting");
           return Promise.reject();
         }
 
