@@ -19,11 +19,11 @@ module.exports = (character) => {
   }
   .playerCharacterInformationData{
     border-bottom: 1px solid black;
-    height: .148in /* .125in */;
+    height: /* .148in */ .125in;
     font-size: 12px
   }
   .playerCharacterInformationLabel{
-    height: .074in /* .0625in */;
+    height: /* .074in */ .0625in;
     font-size: 5px
   }
   .bold{
@@ -31,39 +31,39 @@ module.exports = (character) => {
     border-bottom: 2px solid black;
   }
     .playerCharacterRows{
-      height: .2222in /* .1875in */;
-      width: 6in /* 5.0625in */;
+      height: /* .2222in */ .1875in;
+      width: /* 6in */ 5.0625in;
     }
       .first{
         float: left;
-        margin-right: .037in /* .03125in */;
+        margin-right: /* .037in */ .03125in;
       }
       .mid{
-        margin-left: .037in /* .03125in */;
-        margin-right: .037in /* .03125in */;
+        margin-left: /* .037in */ .03125in;
+        margin-right: /* .037in */ .03125in;
       }
       .last{
-        margin-left: .037in /* .03125in */;
+        margin-left: /* .037in */ .03125in;
       }
       .playerCharacterDataWrapper{
-        height: .2222in /* .1875in */;
+        height: /* .2222in */ .1875in;
         float: left;
       }
       .six{
-        /* width: 5.0625in; */
-        width: 6in;
+        width: 5.0625in;
+        /* width: 6in; */
       }
       .three{
-        width: 2.96in /* 2.5 */;
+        width: /* 2.96in */ 2.5in;
       }
       .two{
-        width: 1.9506in /* 1.64583in */;
+        width:/*  1.9506in */ 1.64583in;
       }
       .one{
-        width: .9382in /* .7916in */;
+        width: /* .9382in */ .7916in;
       }
   .logo{
-    width: 2.96in /* 2.5in */;
+    width: /* 2.96in */ 2.5in;
   }
   
   .bottom_aligner {
@@ -73,27 +73,27 @@ module.exports = (character) => {
     width: 0px;
   }
   .abilityScoresDiv{
-    height: 1.629in/* 1.375in */;
-    width: 3.034in; 
+    height: /* 1.629in */1.375in;
+    width: 3.034in;                     /*   <-------    */
     border-top: 2px solid black;
-    margin-top: .148in /* .125in */;
+    margin-top: /* .148in */ .125in;
     /* float: left; */
     position: absolute;
   }
     .abilityDivLabelRow{
       height: .20in;
       margin-right: .074in;
-      width: 2.96in; /* 2.96 - .12 (4*.03) = 2.84 / 8 = .355 */
+      width: /* 2.96in; */ 2.96 - .12 (4*.03) = 2.84 / 8 = .355
       text-align: center;
       font-size: 5px;
     }
     .abilityDivRow{
-      height: .215in /* .1875in */;
+      height: /* .215in */ .1875in;
       margin-bottom: .03in;
       margin-right: .074in;
     }
     .abilityDivRowLast{
-      height: .222in /* .1875in */;
+      height: /* .222in */ .1875in;
       margin-right: .074in;
     }
     .abilityDiv_NameTotalMod{
@@ -123,12 +123,12 @@ module.exports = (character) => {
       text-align: center;
     }
     .darkLabel>.dlAbr{
-      height: .148in /* .125in */;
+      height: /* .148in */ .125in;
       font-weight: bold;
       font-size: 12px
     }
     .darkLabel>.dlLabel{
-      height: .074in /* .0625in */;
+      height: /* .074in */ .0625in;
       font-size: 5px    
     }
     .dataSquare{
@@ -141,7 +141,7 @@ module.exports = (character) => {
     height: 1.5in;
     width: 5.966in; 
     /* float: left; */
-    margin-top: .148in /* .125in */;
+    margin-top: /* .148in */ .125in;
     border: 1px solid black;
     position: absolute;
     left: 3.11in; 
