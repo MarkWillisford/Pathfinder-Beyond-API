@@ -44,7 +44,7 @@ describe('tests', function() {
 		return closeServer();
     });
 
-    describe('API calls', function(){
+    /* describe('API calls', function(){
       beforeEach(function(){
         return seedUser()   // <--
         .then(function(userData){ 
@@ -106,7 +106,7 @@ describe('tests', function() {
 
 		  afterEach(function(){
 			return tearDownDb();
-      });
+      }); */
     describe('User GET endpoint', function(){
 			it('should return user with correct fields', function(){
 				// strategy
@@ -1183,7 +1183,7 @@ function seedCharacterData(){
 }
 
 // slightly modified for use in character post endpoint
-function generateSingleCharacter(userID){
+/* function generateSingleCharacter(userID){
   console.info('seeding Character data');
   let ObjectIdReferanceValues = { 
     userID:[],
@@ -1230,7 +1230,7 @@ function generateSingleCharacter(userID){
       })
     })
   })
-}
+} */
 
 function findCharClassPromise(ObjectIdReferanceValues){
   return new Promise((resolve, reject) => {
