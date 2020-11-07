@@ -32,8 +32,6 @@ const cors = require('cors');
 const {CLIENT_ORIGIN} = require('./config/main.config.js');
 
 
-// log the http layer
-app.use(morgan('common'));
 
 // CORS
 /* app.use(function (req, res, next) {
@@ -64,6 +62,9 @@ app.use(function(req, res, next) {
   next();
 });
 // app.use(cors());
+
+// log the http layer
+app.use(morgan('common'));
 
 // Body Parser
 app.use(bodyParser.urlencoded({ extended: false }));
