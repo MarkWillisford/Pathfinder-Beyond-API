@@ -36,7 +36,7 @@ const {CLIENT_ORIGIN} = require('./config/main.config.js');
 app.use(morgan('common'));
 
 // CORS
-app.use(function (req, res, next) {
+/* app.use(function (req, res, next) {
   console.log("In cors Middleware");
   res.header('Access-Control-Allow-Origin', '*');
   //res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin', "Authorization", "Origin", "x-requested-with", "Content-Type", "Content-Range", "Content-Disposition", "Content-Description"); // ,Authorization
@@ -51,7 +51,7 @@ app.use(function (req, res, next) {
   //   return res.send(204);
   // }
   next();
-});
+}); */
 /* app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", '*');
   res.header("Access-Control-Allow-Credentials", true);
