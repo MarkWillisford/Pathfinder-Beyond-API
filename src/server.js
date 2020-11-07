@@ -38,14 +38,17 @@ app.use(morgan('common'));
 // CORS
 app.use(function (req, res, next) {
   console.log("In cors Middleware");
-  res.header('Access-Control-Allow-Origin', '*');
+/*   res.header('Access-Control-Allow-Origin', '*');
   //res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin', "Authorization", "Origin", "x-requested-with", "Content-Type", "Content-Range", "Content-Disposition", "Content-Description"); // ,Authorization
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   // BUG #4 CORS ERROR
   // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS'); */
 
-
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
   
   // if (req.method === 'OPTIONS') {
   //   return res.send(204);
