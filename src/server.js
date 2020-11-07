@@ -37,6 +37,7 @@ app.use(morgan('common'));
 
 // CORS
 app.use(function (req, res, next) {
+  console.log("In cors Middleware");
   res.header('Access-Control-Allow-Origin', '*');
   //res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin', "Authorization", "Origin", "x-requested-with", "Content-Type", "Content-Range", "Content-Disposition", "Content-Description"); // ,Authorization
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
