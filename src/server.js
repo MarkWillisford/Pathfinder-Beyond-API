@@ -6,6 +6,17 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 
+const app = express();
+
+app.use(function(req, res, next) {
+  console.log("Within cors catch middleware: ");
+  console.log(res);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
+
 const aasimarHeritagesRouter = require('./routers/aasimarHeritages.router');
 const bloodlinesRouter = require('./routers/bloodlines.router');
 const charClassesRouter = require('./routers/charClasses.router');
@@ -22,7 +33,6 @@ const tradeGoodsRouter = require('./routers/tradeGoods.router');
 const weaponsRouter = require('./routers/weapons.router');
 const { router: usersRouter } = require('./routers/users.router');
 
-const app = express();
 const { PORT, DATABASE_URL, CONCURRENCY: WORKERS, ENV, TEST_DATABASE_URL } = require('./config/main.config');
 mongoose.Promise = global.Promise;
 
@@ -32,6 +42,8 @@ const cors = require('cors');
 const {CLIENT_ORIGIN} = require('./config/main.config.js');
 
 
+// log the http layer
+app.use(morgan('common'));
 
 // CORS
 /* app.use(function (req, res, next) {
@@ -53,18 +65,7 @@ const {CLIENT_ORIGIN} = require('./config/main.config.js');
   // }
   next();
 }); */
-app.use(function(req, res, next) {
-  console.log("Within cors catch middleware: ");
-  console.log(res);
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  next();
-});
 // app.use(cors());
-
-// log the http layer
-app.use(morgan('common'));
 
 // Body Parser
 app.use(bodyParser.urlencoded({ extended: false }));
